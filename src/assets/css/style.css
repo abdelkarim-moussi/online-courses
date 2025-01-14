@@ -44,7 +44,14 @@ th,td{
 }
 
 .active-btn{
-    color : #F97316;
+    background-color : #3B82F6;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #5a5b5b;
+}
+
+.toggeled-item:hover{
+    box-shadow: 2px 2px 5px #5a5b5b;
 }
 
 .section{
