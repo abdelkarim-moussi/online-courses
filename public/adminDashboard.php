@@ -187,13 +187,41 @@ include_once "../classes/Admin.php";
 
     <!-- Students List -->
     <section class="w-full section text-[#111C2D] bg-white sec4" id="students">
-        
+        <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible visitors</h1>
+
+        <table class="w-full rounded-lg">
+            <thead>
+                <tr class="text-[#686a6d] capitalize">
+                <th class="font-normal">Student Id</th>
+                <th class="font-normal">Student name</th>
+                <th class="font-normal">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php 
+            $admin = new Admin();
+            foreach($admin->showUsersByRole("student") as $user){ ?>
+                <tr>
+                <td class="font-normal">
+                    <?php echo $user["user_id"]; ?>
+                </td>
+                <td class="font-normal">
+                <?php echo $user["firstname"] ." ".$user["lastname"]; ?>
+                </td>
+                <td class="font-normal">
+                <?php echo $user["email"]; ?>
+                </td>
+
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
     </section>
 
 
     <!-- Courses -->
     <section class="w-full section text-[#111C2D] bg-white sec5" id="courses">
-        <h1>courses list</h1>
+        
     </section>
     
 
