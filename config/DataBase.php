@@ -17,8 +17,6 @@ class DataBase{
             $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC);
         
             $this->connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-
-            echo 'connected';
             
         }catch(PDOException $e){
             die("error executing query ".$e->getMessage());
@@ -39,6 +37,3 @@ class DataBase{
     }
 }
 
-
-$db = DataBase::getInstance();
-$db->getConnection();

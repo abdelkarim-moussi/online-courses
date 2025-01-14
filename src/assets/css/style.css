@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    font-family: "Poppins", sans-serif;
+}
+#nav-bar{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#nav-bar,.main-section{
+    max-height: 95vh;
+}
+
+.main-section{
+    overflow: auto;
+}
+
+section{
+    padding: 20px;
+    
+}
+
+table{
+    box-shadow: 2px 2px 5px rgb(219, 219, 219);
+    border-radius: 2px;
+}
+
+
+th,td{
+    padding: 7px 10px;
+    text-align: center;
+    font-weight: 500;
+}
+
+
+
+
+.hero{
+    background : linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.9)),url(../imgs/gym-bg1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.active-btn{
+    color : #F97316;
+}
+
+.section{
+    width: 100%;
+    min-height: 95vh;
+    padding: 30px;
+}
+.sec1{
+    display:none;
+}
+.sec2{
+    display:none;
+}
+.sec3{
+    display:none;
+}
+.sec4{
+    display:none;
+}
+.sec5{
+    display: none;
+}
+.sec6{
+    display: none;
+}
+.sec7{
+    display: none;
+}
+
+/* .notActive{
+    left: -250px;
+} */
+.active{
+    display: block;
+}
+

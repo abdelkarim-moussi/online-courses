@@ -47,13 +47,13 @@ create table courses_tags(
 course_id int,
 tag_id int,
 primary key(course_id,tag_id),
-foreign key(course_id) references articles(course_id) on delete cascade on update cascade,
+foreign key(course_id) references courses(course_id) on delete cascade on update cascade,
 foreign key(tag_id) references tags(tag_id) on delete cascade on update cascade
 );
 
 -- joined courses associated table
 
-create table users-courses(
+create table users_courses(
     user_id int,
     course_id int,
     primary key(user_id,course_id),
