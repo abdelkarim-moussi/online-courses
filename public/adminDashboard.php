@@ -144,12 +144,50 @@ include_once "../classes/Admin.php";
 
     <!-- Teachers list -->
     <section class="w-full section text-[#111C2D] bg-white sec3" id="teachers">
-        <h1>teahchers list</h1>
+        <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible Teachers</h1>
+
+        <table class="w-full rounded-lg">
+            <thead>
+                <tr class="text-[#686a6d] capitalize">
+                <th class="font-normal">Teacher Id</th>
+                <th class="font-normal">Teacher name</th>
+                <th class="font-normal">Email</th>
+                <th class="font-normal">Courses</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            
+            <?php 
+            $admin = new Admin();
+            foreach($admin->showUsersByRole("teacher") as $user){ ?>
+            <tr>
+                <td class="font-normal">
+                    <?php echo $user["user_id"]; ?>
+                </td>
+                <td class="font-normal">
+                <?php echo $user["firstname"] ." ".$user["lastname"]; ?>
+                </td>
+                <td class="font-normal">
+                <?php echo $user["email"]; ?>
+                </td>
+                <?php foreach($admin->calcCoursesForUser($user["user_id"]) as $coursesNum){ ?>
+                <td class="font-normal">
+                    <?php echo $artNum["numar"] ?>
+                </td>
+                <?php } ?>
+
+            </tr>
+            <?php } ?>
+            
+            </tbody>
+        </table>
+
     </section>
 
     <!-- Students List -->
     <section class="w-full section text-[#111C2D] bg-white sec4" id="students">
-        <h1>students list</h1>
+        
     </section>
 
 
