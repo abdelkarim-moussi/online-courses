@@ -1,7 +1,7 @@
 <?php
 include_once "../config/DataBase.php";
 
-class User{
+abstract class User{
   
     private string $firstname;
     private string $lastname;
@@ -77,11 +77,11 @@ class User{
     }
 
 
-    public function login(){
+    public function login($email,$password){
         $db = DataBase::getInstance();
         $conn = $db->getConnection();
 
-        if(empty($this->email) || empty($this->email)){
+        if(empty($email) || empty($password)){
             header("Location: ../public/login.php?email-or-password-can-not-be-empty");
             exit();
         }
@@ -89,7 +89,7 @@ class User{
         try {
             // Prepare query to fetch hashed password by email
             $sql = $conn->prepare("SELECT * FROM users WHERE email = :email");
-            $sql->bindParam(':email',$this->email);
+            $sql->bindParam(':email',$email);
             $sql->execute();
 
             // Check if the user exists
@@ -101,7 +101,7 @@ class User{
             $user = $sql->fetch(PDO::FETCH_ASSOC); // Use fetch() for single-row retrieval
 
             // Verify the password
-            if (!password_verify($this->email, $user["password"])) {
+            if (!password_verify($password, $user["password"])) {
                 header("Location: ../public/login.php?error=passwordincorrect");
                 exit();
             }
