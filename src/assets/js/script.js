@@ -46,3 +46,12 @@ function sectionSwitch(){
 
 }
 sectionSwitch();
+
+
+function addNewCategorie(){
+
+   document.getElementById("addCategorie").classList.remove("hidden");
+   document.getElementById("categories").classList.add("hidden");
+   console.log("clicked");
+
+}

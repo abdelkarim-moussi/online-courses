@@ -13,7 +13,7 @@ include_once "../classes/Admin.php";
 // }
 // else header("Location: login.php");
 
-$admin = new Admin();
+$admin = new Admin("","","","","","");
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +55,7 @@ $admin = new Admin();
     <section class="w-full section text-[#111C2D] bg-white  sec1 categories active relative" id="categories">
         <div class="border-b pb-2 flex justify-between items-center mb-5">
             <h1 class="text-lg mb-5 capitalize">Disponible categories</h1>
-            <button id="addnewcat" class="bg-blue-500 px-3 py-1 text-sm rounded-md shadow-md text-white capitalize hover:bg-blue-600">add new categorie</button>
+            <button id="addnewcat" onclick="addNewCategorie();" class="bg-blue-500 px-3 py-1 text-sm rounded-md shadow-md text-white capitalize hover:bg-blue-600">add new categorie</button>
         </div>
 
         <table class="w-full rounded-lg">
@@ -69,7 +69,6 @@ $admin = new Admin();
          </thead>
          <tbody>
          <?php 
-         $admin = new Admin();
          foreach($admin->showCategories() as $categorie){ ?>
             <tr>
               <td class="font-normal">
@@ -130,12 +129,12 @@ $admin = new Admin();
         <h1 class="text-lg mb-5 border-b pb-5 capitalize">Add new categorie</h1>
         <form class="space-y-4 md:space-y-6" action="../includes/categorie.inc.php" method="post" id="signup-form" enctype="multipart/form-data">
                  <div>
-                      <label for="cat-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie name</label>
-                      <input type="text" name="cat-name" id="cat-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="categorie example">
+                      <label for="categorie-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie name</label>
+                      <input type="text" name="categorie-name" id="categorie-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="categorie example">
                   </div>
                  <div>
-                    <label for="cat-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie description</label>
-                    <textarea name="cat-description" id="cat-description" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="categorie..."></textarea>
+                    <label for="categorie-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie description</label>
+                    <textarea name="categorie-description" id="categorie-description" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="categorie..."></textarea>
                     <div class="error text-sm text-red-600"></div>
                 </div>
                 
@@ -161,7 +160,7 @@ $admin = new Admin();
             <tbody>
             
             <?php 
-            $admin = new Admin();
+
             foreach($admin->showUsersByRole("teacher") as $user){ ?>
             <tr>
                 <td class="font-normal">
@@ -201,7 +200,6 @@ $admin = new Admin();
             </thead>
             <tbody>
             <?php 
-            $admin = new Admin();
             foreach($admin->showUsersByRole("student") as $user){ ?>
                 <tr>
                 <td class="font-normal">
@@ -228,7 +226,9 @@ $admin = new Admin();
             <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
                 <div class="flex gap-3 items-center">
                     <div class="bg-blue-100 w-[50px] h-[50px] rounded-lg"></div>
-
+                    <h1 class="text-[2rem]"><?php $row = $admin->getNumCourses();
+                     echo $row['num']; ?>
+                    </h1>
                 </div>
                 <h3>all courses</h3>
             </div>
@@ -236,7 +236,9 @@ $admin = new Admin();
             <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
                 <div class="flex gap-3 items-center">
                     <div class="bg-green-100 w-[50px] h-[50px] rounded-lg"></div>
-                    
+                    <h1 class="text-[2rem]"><?php $row = $admin->getCoursesByStatus("accepted");
+                     echo $row['num']; ?>
+                    </h1>
                 </div>
                 <h3>accepted courses</h3>
             </div>
@@ -244,7 +246,9 @@ $admin = new Admin();
             <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
                 <div class="flex gap-3 items-center">
                     <div class="bg-orange-100 w-[50px] h-[50px] rounded-lg"></div>
-                    
+                    <h1 class="text-[2rem]"><?php $row = $admin->getCoursesByStatus("pending");
+                     echo $row['num']; ?>
+                    </h1>
                 </div>
                 <h3>pending courses</h3>
             </div>
@@ -252,7 +256,9 @@ $admin = new Admin();
             <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
                 <div class="flex gap-3 items-center">
                     <div class="bg-red-100 w-[50px] h-[50px] rounded-lg"></div>
-                  
+                    <h1 class="text-[2rem]"><?php $row = $admin->getCoursesByStatus("refused");
+                     echo $row['num']; ?>
+                    </h1>
                 </div>
                 <h3>refused courses</h3>
             </div>
@@ -321,6 +327,7 @@ const catModal = document.getElementById("updateCatModal");
 var catId;
 var catName;
 var catDesc;
+
 function openModal(catId,catName,catDesc){
 
    catModal.classList.remove("hidden");

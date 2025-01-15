@@ -3,7 +3,7 @@ include_once "Categorie.php";
 include_once "User.php";
 include_once "../config/DataBase.php";
 
-class Admin{
+class Admin extends User{
 
     public function createCategorie(Categorie $categorie){
 
@@ -13,8 +13,9 @@ class Admin{
 
             $sql = $conn->prepare("INSERT INTO categories (categorie_name,description) VALUES(?,?)");
             $sql->execute([$categorie->getCatName(),$categorie->getDescription()]);
-        
+            exit();
         }
+        else return $ex = new Exception("categorie name and description can't be empty");
 
     }
 
@@ -75,7 +76,7 @@ class Admin{
 
         $numCourses = $conn->prepare("SELECT count(*) AS num FROM courses");
         $numCourses->execute();
-        $result = $numCourses->fetchAll();
+        $result = $numCourses->fetch();
         return $result;
 
     }
@@ -86,7 +87,7 @@ class Admin{
 
         $selectNumCoursesByStat = $conn->prepare("SELECT count(*) AS num FROM courses WHERE status = ?");
         $selectNumCoursesByStat->execute([$status]);
-        $result = $selectNumCoursesByStat->fetchAll();
+        $result = $selectNumCoursesByStat->fetch();
         return $result;
 
     }

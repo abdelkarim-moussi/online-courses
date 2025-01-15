@@ -111,6 +111,7 @@ abstract class User{
         }
     }
 
+    
     public function UserInfo($userId){
 
         $db = DataBase::getInstance();

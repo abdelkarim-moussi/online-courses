@@ -5,12 +5,11 @@ include_once "Teacher.php";
 class Visitor{
 
     public function createAccount($firstname, $lastname, $email, $role, $photo, $password){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
 
         if($role === "student"){
             $student = new Student($firstname, $lastname, $email,$role, $photo, $password);
-
-            $db = DataBase::getInstance();
-            $conn = $db->getConnection();
         
             // Check if email already exists
             $sql = $conn->prepare("SELECT email FROM users WHERE email = :email");
@@ -44,9 +43,6 @@ class Visitor{
 
         else if($role === "teacher"){
             $teacher = new Teacher($firstname, $lastname, $email,$role, $photo, $password);
-
-            $db = DataBase::getInstance();
-            $conn = $db->getConnection();
         
             // Check if email already exists
             $sql = $conn->prepare("SELECT email FROM users WHERE email = :email");
