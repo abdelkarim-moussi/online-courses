@@ -52,7 +52,7 @@ include_once "../classes/User.php";
             
 </section>
     
-<main class="w-full main-section">
+<main class="w-full main-section text-sm h-[100%] rounded-xl shadow-lg shadow-gray-400">
 
 
 
@@ -66,7 +66,7 @@ include_once "../classes/User.php";
                 <h3 class="text-[2rem]"></h3>
                 
             </div>
-            <h3>My articles</h3>
+            <h3>My courses</h3>
         </div>
 
         <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
@@ -76,7 +76,7 @@ include_once "../classes/User.php";
                 <h3 class="text-[2rem]"></h3>
                
             </div>
-            <h3>accepted articles</h3>
+            <h3>accepted courses</h3>
         </div>
 
         <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
@@ -86,7 +86,7 @@ include_once "../classes/User.php";
                 <h3 class="text-[2rem]"></h3>
              
             </div>
-            <h3>pending articles</h3>
+            <h3>pending courses</h3>
         </div>
 
         <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
@@ -96,20 +96,20 @@ include_once "../classes/User.php";
                 <h3 class="text-[2rem]"></h3>
                
             </div>
-            <h3>refused articles</h3>
+            <h3>refused courses</h3>
         </div>
     </div>
 
     <div class="flex items-enter justify-between mb-5 border-b pb-5">
-    <h1 class="text-lg capitalize">Disponible articles</h1>
+    <h1 class="text-lg capitalize">Disponible courses</h1>
     <button id="addnewart" class="bg-blue-200 px-3 py-1 text-sm rounded-md capitalize hover:bg-blue-500 hover:text-white">add new course</button>
     </div>
     <table class="w-full rounded-lg text-sm">
          <thead>
             <tr class="text-[#686a6d] capitalize">
-               <th class="font-normal">article Id</th>
-               <th class="font-normal max-w-[200px]">article title</th>
-               <th class="font-normal">author name</th>
+               <th class="font-normal">course Id</th>
+               <th class="font-normal max-w-[200px]">course title</th>
+               <th class="font-normal">teacher name</th>
                <th class="font-normal">status</th>
                <th class="font-normal">actions</th>
             </tr>
@@ -130,8 +130,8 @@ include_once "../classes/User.php";
                   <p class="bg-blue-50 rounded-md"></p>
               </td>
               <td class="font-normal flex justify-center gap-3">
-                <a href="javascript:void(0);" onclick="openModal('<?php echo $article['article_id']; ?>','<?php echo $article['title']; ?>','<?php echo $article['content']; ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
-                <a href="../includes/article.inc.php?idart=<?php echo $article['article_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
+                <a href="javascript:void(0);" onclick="openModal('<?php echo $course['course_id']; ?>','<?php echo $course['title']; ?>','<?php echo $course['content']; ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
+                <a href="../includes/course.inc.php?idart=<?php echo $course['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
               </td>
             </tr>
          </tbody>
@@ -161,9 +161,9 @@ include_once "../classes/User.php";
                     <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                  </div>
 
-                    <input type="hidden" name="artId" id="artId">
+                    <input type="hidden" name="courseId" id="courseId">
 
-                  <button type="submit" name="update-article" id="update-article" class="w-full uppercase tracking-wide text-white bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update Article</button>
+                  <button type="submit" name="update-course" id="update-course" class="w-full uppercase tracking-wide text-white bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update Course</button>
         
             </form>
 
@@ -201,7 +201,7 @@ include_once "../classes/User.php";
                       </select>
                   </div>
                 
-                  <button type="submit" name="add-art" id="add-art" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add Course</button>
+                  <button type="submit" name="add-course" id="add-course" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add Course</button>
         
             </form>
     </section>

@@ -81,7 +81,7 @@ class User{
         $db = DataBase::getInstance();
         $conn = $db->getConnection();
 
-        if(empty($this->getEmail()) || empty($this->getPassword())){
+        if(empty($this->email) || empty($this->email)){
             header("Location: ../public/login.php?email-or-password-can-not-be-empty");
             exit();
         }
@@ -89,7 +89,7 @@ class User{
         try {
             // Prepare query to fetch hashed password by email
             $sql = $conn->prepare("SELECT * FROM users WHERE email = :email");
-            $sql->bindParam(':email',$this->getEmail());
+            $sql->bindParam(':email',$this->email);
             $sql->execute();
 
             // Check if the user exists
@@ -101,7 +101,7 @@ class User{
             $user = $sql->fetch(PDO::FETCH_ASSOC); // Use fetch() for single-row retrieval
 
             // Verify the password
-            if (!password_verify($this->getPassword(), $user["password"])) {
+            if (!password_verify($this->email, $user["password"])) {
                 header("Location: ../public/login.php?error=passwordincorrect");
                 exit();
             }

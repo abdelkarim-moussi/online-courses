@@ -8,6 +8,7 @@ if(isset($_POST['login'])){
     $password = $_POST["password"];
 
     if(isset($email) && isset($password)){
+        
         $user = new User("","",$email, "", "", $password,"");
         if($email === null || $password === null){
             header("Location: ../public/login.php?email-or-password-can-not-be-null");
