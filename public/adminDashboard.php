@@ -38,11 +38,11 @@ $admin = new Admin();
             
             <div class="py-5 dach">
                 <ul class="pl-2 flex flex-col gap-y-6">
-                    <li class="toggeled-item text-sm font-bold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center active-btn" ><i class="fa-solid fa-gauge"></i><a data-id ="categories" href="#">Categories</a></li>
-                    <li class="toggeled-item text-sm font-bold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list-check"></i><a data-id ="addCategorie" href="#">Add Categorie</a></li>
-                    <li class="toggeled-item text-sm font-bold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="teachers" href="#">Teachers</a></li>
-                    <li class="toggeled-item text-sm font-bold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="students" href="#">Students</a></li>
-                    <li class="toggeled-item text-sm font-bold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list"></i><a data-id ="courses" href="#">Courses</a></li>
+                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center active-btn" ><i class="fa-solid fa-gauge"></i><a data-id ="categories" href="#">Categories</a></li>
+                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list-check"></i><a data-id ="addCategorie" href="#">Add Categorie</a></li>
+                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="teachers" href="#">Teachers</a></li>
+                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="students" href="#">Students</a></li>
+                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list"></i><a data-id ="courses" href="#">Courses</a></li>
                     <li class="toggeled-item absolute w-[200px] bottom-5 text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><a href="../includes/logout.inc.php"><i class="fa-solid fa-sign-out"></i> logout</a></li>
                 </ul>
             </div>
