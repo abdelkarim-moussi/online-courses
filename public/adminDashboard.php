@@ -40,6 +40,7 @@ $admin = new Admin("","","","","","");
                 <ul class="pl-2 flex flex-col gap-y-6">
                     <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center active-btn" ><i class="fa-solid fa-gauge"></i><a data-id ="categories" href="#">Categories</a></li>
                     <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list-check"></i><a data-id ="addCategorie" href="#">Add Categorie</a></li>
+                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list-check"></i><a data-id ="tags" href="#">Tags</a></li>
                     <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="teachers" href="#">Teachers</a></li>
                     <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="students" href="#">Students</a></li>
                     <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list"></i><a data-id ="courses" href="#">Courses</a></li>
@@ -251,6 +252,7 @@ $admin = new Admin("","","","","","");
                     </h1>
                 </div>
                 <h3>pending courses</h3>
+        
             </div>
 
             <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
@@ -265,7 +267,11 @@ $admin = new Admin("","","","","","");
         </div>
         
         <h1 class="text-lg mb-5 border-b pb-5 capitalize">pending courses</h1>
-
+        <p class="border-b pb-2 text-orange-400"><?php $row = $admin->getCoursesByStatus("pending");
+                     if($row['num'] == 0) {
+                        echo "Oops! there is no pending courses";
+                     } ?>
+        </p >
         <table class="w-full rounded-lg">
             <thead>
                 <tr class="text-[#686a6d] capitalize">
@@ -311,11 +317,50 @@ $admin = new Admin("","","","","","");
         
     </section>
     
+    <section class="w-full section text-[#111C2D] bg-white sec8 relative" id="tags">
+        <div class="border-b pb-5 flex justify-between items-center">
+            <h1 class="text-lg mb-5 capitalize">Disponible Tags</h1>
+            <button id="addnewcat" onclick="openTagModal()" class="bg-blue-500 px-3 py-1 text-sm rounded-md shadow-md text-white capitalize hover:bg-blue-600">add new tag</button>
+        </div>
+        <table class="w-full rounded-lg">
+            <thead>
+                <tr>
+                    <th class="font-normal">tag id</th>
+                    <th class="font-normal">tag name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-normal"></td>
+                    <td class="font-normal"></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <div class="w-full hidden bg-white dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 fixed top-5 right-10 shadow-lg rounded-lg" id="tag-modal">
+            <img src="../src/assets/imgs/close.png" alt="" class="w-[30px] float-right m-3 cursor-pointer" onclick="closeTagModal()" id="close-tag-modal">
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 class="text-xl border-b pb-3 text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                 add tag
+              </h1>
+    
+            <form class="space-y-4 md:space-y-6" action="../includes/tag.inc.php" method="post">
+
+                 <div>
+                      <label for="tag-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tag name</label>
+                      <input type="text" name="tag-name" id="tag-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                 </div>
+        
+                  <button type="submit" name="add-tag" id="add-tag" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">ajouter tag</button>
+        
+            </form>
+
+          </div>
+        </div>
+    </section>
 
 </main>
-
-
-
 
 
 
@@ -374,6 +419,14 @@ const globalSection = document.querySelector("body");
  
 function closeModal(){
    document.getElementById("updateCatModal").classList.add("hidden");
+}
+
+function openTagModal(){
+   document.getElementById("tag-modal").classList.remove("hidden");
+}
+
+function closeTagModal(){
+    document.getElementById("tag-modal").classList.add("hidden");
 }
 
 </script>
