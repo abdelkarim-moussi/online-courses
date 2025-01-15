@@ -114,7 +114,7 @@ $admin = new Admin("","","","","","");
 
                     <input type="hidden" name="catId" id="catId">
 
-                  <button type="submit" name="update-categorie" id="update-cat" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update Categorie</button>
+                  <button type="submit" name="update-categorie" id="update-categorie" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update Categorie</button>
         
             </form>
 
@@ -266,10 +266,10 @@ $admin = new Admin("","","","","","");
             </div>
         </div>
         
-        <h1 class="text-lg mb-5 border-b pb-5 capitalize">pending courses</h1>
+        <h1 class="text-lg mb-5 border-b pb-5 capitalize">disponible courses</h1>
         <p class="border-b pb-2 text-orange-400"><?php $row = $admin->getCoursesByStatus("pending");
                      if($row['num'] == 0) {
-                        echo "Oops! there is no pending courses";
+                        echo "Oops! there is no courses";
                      } ?>
         </p >
         <table class="w-full rounded-lg">
