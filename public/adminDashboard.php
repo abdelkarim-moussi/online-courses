@@ -12,6 +12,8 @@ include_once "../classes/Admin.php";
 //     }
 // }
 // else header("Location: login.php");
+
+$admin = new Admin();
 ?>
 
 <!DOCTYPE html>
@@ -221,6 +223,85 @@ include_once "../classes/Admin.php";
 
     <!-- Courses -->
     <section class="w-full section text-[#111C2D] bg-white sec5" id="courses">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-5 gap-5">
+            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
+                <div class="flex gap-3 items-center">
+                    <div class="bg-blue-100 w-[50px] h-[50px] rounded-lg"></div>
+
+                </div>
+                <h3>all courses</h3>
+            </div>
+
+            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
+                <div class="flex gap-3 items-center">
+                    <div class="bg-green-100 w-[50px] h-[50px] rounded-lg"></div>
+                    
+                </div>
+                <h3>accepted courses</h3>
+            </div>
+
+            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
+                <div class="flex gap-3 items-center">
+                    <div class="bg-orange-100 w-[50px] h-[50px] rounded-lg"></div>
+                    
+                </div>
+                <h3>pending courses</h3>
+            </div>
+
+            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
+                <div class="flex gap-3 items-center">
+                    <div class="bg-red-100 w-[50px] h-[50px] rounded-lg"></div>
+                  
+                </div>
+                <h3>refused courses</h3>
+            </div>
+        </div>
+        
+        <h1 class="text-lg mb-5 border-b pb-5 capitalize">pending courses</h1>
+
+        <table class="w-full rounded-lg">
+            <thead>
+                <tr class="text-[#686a6d] capitalize">
+                <th class="font-normal">course Id</th>
+                <th class="font-normal max-w-[200px]">course title</th>
+                <th class="font-normal">teacher name</th>
+                <th class="font-normal">status</th>
+                <th class="font-normal">actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php
+                foreach($admin->showCourses() as $result){ ?>
+                    <tr>
+                        <td class="font-normal">
+                            <?php echo $result["course_id"];?>
+                        </td>
+                        <td class="font-normal">
+                        <?php echo $result["title"];?>
+                        </td>
+                        <td class="font-normal">
+                        <?php echo $result["firstname"];?>
+                        </td>
+                        <td class="font-normal">
+                            <p class="bg-blue-50 rounded-md"><?php echo $result["status"]; ?></p>
+                        </td>
+                        <td class="font-normal flex justify-center gap-3">
+                            <?php if($result['status'] === 'pending'){ ?>
+                                <a href="../includes/article.inc.php?acidart=<?php echo $result['course_id']; ?>" class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">accept</a>
+                                <a href="../includes/article.inc.php?refidart=<?php echo $result['course_id']; ?>" class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">refuse</i></a>
+                            <?php } 
+                                  else{ ?>
+                                <a href="../includes/article.inc.php?idart=<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
+                            <?php }?>
+                        </td>
+                    </tr>
+                <?php } ?>
+
+            </tbody>
+
+        </table>
         
     </section>
     
