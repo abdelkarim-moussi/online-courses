@@ -345,7 +345,7 @@ $admin = new Admin("","","","","","");
                  add tag
               </h1>
     
-            <form class="space-y-4 md:space-y-6" action="../includes/tag.inc.php" method="post">
+            <form class="space-y-4 md:space-y-6" action="../includes/tag.in.php" method="post">
 
                  <div>
                       <label for="tag-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tag name</label>

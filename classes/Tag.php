@@ -15,13 +15,24 @@ class Tag{
         $this->tagName = $tagName;
     }
 
-    public function getTagByName($tagName){
+    public function getTagByName(){
         $db = DataBase::getInstance();
         $conn = $db->getConnection();
 
         $slectTag = $conn->prepare("SELECT tag_name FROM tags WHERE tag_name = :tagname");
-        $slectTag->execute(array($tagName));
-        return $result = $slectTag->fetch();
+        $slectTag->bindParam(":tagname",$this->tagName);
+        $slectTag->execute();
+        $result = $slectTag->fetch();
+        return $result;
 
+    }
+
+    public function createTag(){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $slectTag = $conn->prepare("INSERT INTO tags (tag_name) VALUES(:tagname)");
+        $slectTag->bindParam(":tagname",$this->tagName);
+        $slectTag->execute();
     }
 }
