@@ -13,7 +13,7 @@ class Admin extends User{
 
             $sql = $conn->prepare("INSERT INTO categories (categorie_name,categorie_description) VALUES(?,?)");
             $sql->execute([$categorie->getCatName(),$categorie->getDescription()]);
-            exit();
+            
         }
         else return $ex = new Exception("categorie name and description can't be empty");
 
@@ -43,19 +43,18 @@ class Admin extends User{
         $deletQuery = $conn->prepare("DELETE FROM categories WHERE categorie_id = :idcategorie");
         $deletQuery->bindParam(":idcategorie",$idcategorie);
         $deletQuery->execute();
-        header("Location: ../public/adminDash.php");
     }
 
-    public function UpdateCategorie($categorieId,$categorieName,$categorieDesc){
+    public function UpdateCategorie($categorieId,Categorie $categorie){
 
         $db = DataBase::getInstance();
         $conn = $db->getConnection();
 
         $updateCat = $conn->prepare("UPDATE categories 
-        SET categorie_name = :name, description = :description
+        SET categorie_name = :name, categorie_description = :description
         WHERE categorie_id = :id");
-        $updateCat->bindParam(":name",$categorieName);
-        $updateCat->bindParam(":description",$categorieDesc);
+        $updateCat->bindParam(":name",$categorie->getCatName());
+        $updateCat->bindParam(":description",$categorie->getDescription());
         $updateCat->bindParam(":id",$categorieId);
         $updateCat->execute();
     }

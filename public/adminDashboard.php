@@ -106,15 +106,15 @@ $tag = new Tag("");
             <form class="space-y-4 md:space-y-6" action="../includes/categorie.inc.php" method="post" id="">
 
                  <div>
-                      <label for="cat-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie name</label>
-                      <input type="text" name="catName" id="catName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <label for="up-cat-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie name</label>
+                      <input type="text" name="up-cat-name" id="up-cat-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                  </div>
                  <div>
-                    <label for="cat-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie description</label>
-                    <textarea name="catDes" id="catDes" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                    <label for="up-cat-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie description</label>
+                    <textarea name="up-cat-description" id="up-cat-description" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                  </div>
 
-                    <input type="hidden" name="catId" id="catId">
+                    <input type="hidden" name="up-cat-id" id="up-cat-id">
 
                   <button type="submit" name="update-categorie" id="update-categorie" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update Categorie</button>
         
@@ -385,9 +385,9 @@ function openModal(catId,catName,catDesc){
 
    catModal.classList.remove("hidden");
 
-   document.getElementById("catName").value = catName;
-   document.getElementById("catDes").textContent = catDesc;
-   document.getElementById("catId").value = catId;
+   document.getElementById("up-cat-name").value = catName;
+   document.getElementById("up-cat-description").textContent = catDesc;
+   document.getElementById("up-cat-id").value = catId;
 
 }
 

@@ -4,18 +4,33 @@ include_once "../classes/Admin.php";
 
 if($_SERVER['REQUEST_METHOD'] === "POST"){
     if(isset($_POST["add-categorie"])){
-    $catName = $_POST["categorie-name"];
-    $catDesc = $_POST["categorie-description"];
+    $catName = htmlspecialchars($_POST["categorie-name"]);
+    $catDesc = htmlspecialchars($_POST["categorie-description"]);
 
     if(isset($catName) && isset($catDesc)){
         
         $categorie = new Categorie($catName,$catDesc);
-        $adm = new Admin("","","","","","");
-        $adm -> createCategorie($categorie);
-
-        header("Location: ../public/adminDash.php");
+        $admin = new Admin("","","","","","");
+        $admin -> createCategorie($categorie);
+        header("Location: ../public/adminDashboard.php");
 
     }
     }
 
+}
+
+
+if(isset($_POST["update-categorie"])){
+    $categorieName = htmlspecialchars($_POST["up-cat-name"]);
+    $categorieDescription = htmlspecialchars($_POST["up-cat-description"]);
+    $categorieId = htmlspecialchars($_POST["up-cat-id"]);
+
+    if(!empty($categorieName) && !empty($categorieDescription)){
+        $categorie = new Categorie($categorieName,$categorieDescription);
+        $admin = new Admin("","","","","","");
+        $admin->UpdateCategorie($categorieId,$categorie);
+
+        header("Location: ../public/adminDashboard.php");
+    }
+    
 }
