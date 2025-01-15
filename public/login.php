@@ -21,13 +21,13 @@ session_start();
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
-    <title>Culture Sharing</title>
+    <title>Online Courses</title>
 </head>
 <body class="px-4 bg-[#F0F5F9] flex flex-col gap-5 relative">
 
 <header class="header w-full max-w-[900px] fixed mx-auto bg-white py-3 px-5 rounded-lg shadow-md flex items-center justify-between left-[50%] translate-x-[-50%]">
-  <h1 class="text-orange-400 font-semibold text-[1.2rem] capitalize">Culutre/<span class="text-[#111C2D]">Sharing</span></h1>
-  <a href="signup.php" class="hover:text-orange-400 underline">signup</a>
+  <h1 class="text-blue-500 font-semibold text-[1.2rem] capitalize">Online/<span class="text-[#111C2D]">Courses</span></h1>
+  <a href="signup.php" class="hover:text-blue-500 underline">signup</a>
 </header>
 
 <!-- login form -->
@@ -48,7 +48,7 @@ session_start();
                       <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   </div>
                   
-                  <button type="submit" name="login" id="signin" class="w-full uppercase tracking-wide text-white bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Login</button>
+                  <button type="submit" name="login" id="signin" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Login</button>
                   <p class="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                       don't have an account? <a href="signup.php" class="font-medium text-primary-600 hover:underline dark:text-primary-500">sign up here</a>
                   </p>
