@@ -77,7 +77,7 @@ abstract class User{
     }
 
 
-    public function login($email,$password){
+    public static function login($email,$password){
         $db = DataBase::getInstance();
         $conn = $db->getConnection();
 

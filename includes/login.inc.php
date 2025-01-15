@@ -9,13 +9,12 @@ if(isset($_POST['login'])){
 
     if(isset($email) && isset($password)){
         
-        $user = new User("","",$email, "", "", $password,"");
         if($email === null || $password === null){
             header("Location: ../public/login.php?email-or-password-can-not-be-null");
             exit();
         }
         
-        $user->login();
+        User::login($email,$password);
         header("Location: ../public/index.php");
     }
 }
