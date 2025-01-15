@@ -9,16 +9,14 @@ abstract class User{
     private string $role;
     private string $photo;
     private string $password;
-    private string $passConfirm;
 
-    public function __construct($firstname,$lastname,$email, $role, $photo, $password, $passConfirm){
+    public function __construct($firstname,$lastname,$email, $role, $photo, $password){
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
         $this->role = $role;
         $this->photo = $photo;
         $this->password = $password;
-        $this->passConfirm = $passConfirm;
     }
 
     //firstname getter and setter
@@ -68,13 +66,7 @@ abstract class User{
     public function setPassword($password){
       $this -> password = $password;
     }
-    //password confirm getter and setter
-    public function getPassConfirm(){
-        return $this -> passConfirm;
-    }
-    public function setPassConfirm($passConfirm){
-      $this -> passConfirm = $passConfirm;
-    }
+   
 
 
     public static function login($email,$password){
