@@ -329,6 +329,7 @@ $tag = new Tag("");
                 <tr>
                     <th class="font-normal">tag id</th>
                     <th class="font-normal">tag name</th>
+                    <th class="font-normal">actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -338,6 +339,7 @@ $tag = new Tag("");
                 <tr>
                     <td class="font-normal"><?php echo $row["tag_id"]; ?></td>
                     <td class="font-normal"><?php echo $row["tag_name"]; ?></td>
+                    <td class="font-normal"><a class="bg-red-100 hover:bg-red-200 py-1 px-3 rounded-md" href="../includes/tag.in.php?idtag=<?php echo $row['tag_id'];?>">delete</a></td>
                 </tr>
                 <?php } ?>
             </tbody>

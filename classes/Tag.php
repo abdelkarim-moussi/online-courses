@@ -44,4 +44,12 @@ class Tag{
         $result = $selectTags->fetchAll();
         return $result;
     }
+
+    public function deleteTag($tagId){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $deleteTag = $conn->prepare("DELETE FROM tags WHERE tag_id = ?");
+        $deleteTag->execute([$tagId]);
+    }
 }

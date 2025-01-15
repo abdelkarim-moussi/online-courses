@@ -19,3 +19,11 @@ if(isset($_POST['add-tag'])){
 
     }
 }
+
+
+if(isset($_GET["idtag"])){
+    $tagId = $_GET["idtag"];
+    $tag = new Tag("");
+    $tag->deleteTag($tagId);
+    header("Location: ../public/adminDashboard.php");
+}
