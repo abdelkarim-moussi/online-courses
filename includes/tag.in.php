@@ -2,7 +2,7 @@
 include_once "../classes/Tag.php";
 if(isset($_POST['add-tag'])){
 
-    $tagName = $_POST['tag-name'];
+    $tagName = htmlspecialchars($_POST['tag-name']);
 
     if(!empty($tagName)){
         $tag = new Tag($tagName);
@@ -14,6 +14,7 @@ if(isset($_POST['add-tag'])){
 
         else {
             $tag->createTag();
+            header("Location: ../public/adminDashboard.php");
         }
 
     }

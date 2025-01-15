@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once "../classes/Admin.php";
+include_once "../classes/Tag.php";
 
 // if(isset($_SESSION['userId'])){
 
@@ -14,6 +15,7 @@ include_once "../classes/Admin.php";
 // else header("Location: login.php");
 
 $admin = new Admin("","","","","","");
+$tag = new Tag("");
 ?>
 
 <!DOCTYPE html>
@@ -330,10 +332,14 @@ $admin = new Admin("","","","","","");
                 </tr>
             </thead>
             <tbody>
+                <?php $tags = $tag->getTags();
+                foreach($tags as $row){
+                ?>
                 <tr>
-                    <td class="font-normal"></td>
-                    <td class="font-normal"></td>
+                    <td class="font-normal"><?php echo $row["tag_id"]; ?></td>
+                    <td class="font-normal"><?php echo $row["tag_name"]; ?></td>
                 </tr>
+                <?php } ?>
             </tbody>
         </table>
 

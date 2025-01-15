@@ -35,4 +35,13 @@ class Tag{
         $slectTag->bindParam(":tagname",$this->tagName);
         $slectTag->execute();
     }
+
+    public function getTags(){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $selectTags = $conn->query("SELECT * FROM tags");
+        $result = $selectTags->fetchAll();
+        return $result;
+    }
 }
