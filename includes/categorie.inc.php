@@ -1,4 +1,6 @@
 <?php
+include_once "../classes/Categorie.php";
+include_once "../classes/Admin.php";
 
 if($_SERVER['REQUEST_METHOD'] === "POST"){
     if(isset($_POST["add-categorie"])){

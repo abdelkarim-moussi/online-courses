@@ -82,7 +82,7 @@ $admin = new Admin("","","","","","");
               </td>
               <td class="font-normal flex justify-center gap-3">
               <!-- <button id="open">up</button> -->
-                <a href="javascript:void(0);" onclick="openModal('<?php echo $categorie['categorie_id'];?>','<?php echo $categorie['categorie_name'];?>','<?php echo $categorie['description'];?>')"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">update</a>
+                <a href="javascript:void(0);" onclick="openModal('<?php echo $categorie['categorie_id'];?>','<?php echo $categorie['categorie_name'];?>','<?php echo $categorie['categorie_description'];?>')"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">update</a>
                 <a href="../includes/categorie.inc.php?idcat=<?php echo $categorie['categorie_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
               </td>
 
@@ -93,8 +93,8 @@ $admin = new Admin("","","","","","");
         </table>
 
       <!-- update categorie -->
-        <div class="w-full hidden bg-white dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 fixed top-5" id="updateCatModal">
-            <img src="../public/assets/imgs/close.png" alt="" class="w-[30px] float-right m-3 cursor-pointer" onclick="closeModal()" id="closeUpCatModal">
+        <div class="w-full hidden bg-white dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 fixed top-5 shadow-lg" id="updateCatModal">
+            <img src="../src/assets/imgs/close.png" alt="" class="w-[30px] float-right m-3 cursor-pointer" onclick="closeModal()" id="closeUpCatModal">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 class="text-xl border-b pb-3 text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                  Update categorie
@@ -172,14 +172,14 @@ $admin = new Admin("","","","","","");
                 <td class="font-normal">
                 <?php echo $user["email"]; ?>
                 </td>
-                <?php foreach($admin->calcCoursesForUser($user["user_id"]) as $coursesNum){ ?>
+                <?php $coursesNum = $admin->calcCoursesForUser($user["user_id"])?>
                 <td class="font-normal">
-                    <?php echo $artNum["numar"] ?>
+                    <?php echo $coursesNum["numcourses"] ?>
                 </td>
                 <?php } ?>
 
             </tr>
-            <?php } ?>
+            <?php ?>
             
             </tbody>
         </table>
@@ -188,7 +188,7 @@ $admin = new Admin("","","","","","");
 
     <!-- Students List -->
     <section class="w-full section text-[#111C2D] bg-white sec4" id="students">
-        <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible visitors</h1>
+        <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible Students</h1>
 
         <table class="w-full rounded-lg">
             <thead>
@@ -372,6 +372,9 @@ const globalSection = document.querySelector("body");
       }
    })
  
+function closeModal(){
+   document.getElementById("updateCatModal").classList.add("hidden");
+}
 
 </script>
 

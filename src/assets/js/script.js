@@ -55,3 +55,4 @@ function addNewCategorie(){
    console.log("clicked");
 
 }
+

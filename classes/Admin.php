@@ -11,7 +11,7 @@ class Admin extends User{
             $db = DataBase::getInstance();
             $conn = $db->getConnection();
 
-            $sql = $conn->prepare("INSERT INTO categories (categorie_name,description) VALUES(?,?)");
+            $sql = $conn->prepare("INSERT INTO categories (categorie_name,categorie_description) VALUES(?,?)");
             $sql->execute([$categorie->getCatName(),$categorie->getDescription()]);
             exit();
         }
@@ -107,10 +107,10 @@ class Admin extends User{
         $db = DataBase::getInstance();
         $conn = $db->getConnection();
 
-        $selectUserCoursesNum = $conn->prepare("SELECT COUNT(*) AS numar FROM courses 
+        $selectUserCoursesNum = $conn->prepare("SELECT COUNT(*) AS numcourses FROM courses 
         WHERE user_id = ?");
         $selectUserCoursesNum->execute([$userId]);
-        $result = $selectUserCoursesNum->fetchAll();
+        $result = $selectUserCoursesNum->fetch();
         return $result;
 
     }
