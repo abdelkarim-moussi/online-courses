@@ -7,13 +7,13 @@ if(isset($_GET['action'])){
     $courseId = $array[1];
 
     switch($action){
-        case 'accept' : User::changeUserStatus($courseId,'accepted');
+        case 'accept' : Course::changeCourseStatus($courseId,'accepted');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'refuse' : User::changeUserStatus($courseId,'refused');
+        case 'refuse' : Course::changeCourseStatus($courseId,'refused');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'delete' : User::deleteCourse($courseId);
+        case 'delete' : Course::deleteCourse($courseId);
         header("Location: ../public/adminDashboard.php");
         break;
     }
