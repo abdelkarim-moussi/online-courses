@@ -40,6 +40,7 @@ class Admin extends User{
     public function deleteCategorie($idcategorie){
         $db = DataBase::getInstance();
         $conn = $db->getConnection();
+        
         $deletQuery = $conn->prepare("DELETE FROM categories WHERE categorie_id = :idcategorie");
         $deletQuery->bindParam(":idcategorie",$idcategorie);
         $deletQuery->execute();

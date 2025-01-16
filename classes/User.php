@@ -111,6 +111,20 @@ abstract class User{
         }
     }
 
+    public static function changeUserStatus($userId,$status){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+        if($status != 'deleted'){
+            $changeUserStatus = $conn->prepare("UPDATE users SET user_status = ? WHERE user_id = ?");
+            $changeUserStatus->execute([$status,$userId]);
+        }
+
+        else{
+            $deleteUser = $conn->prepare("DELETE FROM users WHERE user_id = ?");
+            $deleteUser->execute([$userId]);
+        }
+        
+    }
     
     public function UserInfo($userId){
 
@@ -144,6 +158,8 @@ abstract class User{
         $result = $selectImage->fetch();
         return $result;
     }
+
+
 
 }
 

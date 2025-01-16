@@ -4,8 +4,6 @@ const icon = document.querySelector(".fa-solid")
 const toggledItems = document.querySelectorAll(".toggeled-item");
 const sections = document.querySelectorAll("section");
 const globalSections = document.querySelector("body")
-const addnewCatBtn = document.getElementById("addnewcat");
-const addnewArtBtn = document.getElementById("addnewart");
 
 const closeUpCatModal = document.getElementById("closeUpCatModal");
 
@@ -47,14 +45,6 @@ function sectionSwitch(){
 }
 sectionSwitch();
 
-
-function addNewCategorie(){
-
-   document.getElementById("addCategorie").classList.remove("hidden");
-   document.getElementById("categories").classList.add("hidden");
-   console.log("clicked");
-
-}
 
 
 

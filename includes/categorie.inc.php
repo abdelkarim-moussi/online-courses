@@ -34,3 +34,11 @@ if(isset($_POST["update-categorie"])){
     }
     
 }
+
+if(isset($_GET["idcat"])){
+    $categorieId = $_GET["idcat"];
+    $admin = new Admin("","","","","","");
+    $admin->deleteCategorie($categorieId);
+
+    header("Location: ../public/adminDashboard.php");
+}

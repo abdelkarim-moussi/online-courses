@@ -58,7 +58,6 @@ $tag = new Tag("");
     <section class="w-full section text-[#111C2D] bg-white  sec1 categories active relative" id="categories">
         <div class="border-b pb-2 flex justify-between items-center mb-5">
             <h1 class="text-lg mb-5 capitalize">Disponible categories</h1>
-            <button id="addnewcat" onclick="addNewCategorie();" class="bg-blue-500 px-3 py-1 text-sm rounded-md shadow-md text-white capitalize hover:bg-blue-600">add new categorie</button>
         </div>
 
         <table class="w-full rounded-lg">
@@ -157,6 +156,7 @@ $tag = new Tag("");
                 <th class="font-normal">Teacher name</th>
                 <th class="font-normal">Email</th>
                 <th class="font-normal">Courses</th>
+                <th class="font-normal">Actions</th>
                 </tr>
             </thead>
 
@@ -178,6 +178,10 @@ $tag = new Tag("");
                 <?php $coursesNum = $admin->calcCoursesForUser($user["user_id"])?>
                 <td class="font-normal">
                     <?php echo $coursesNum["numcourses"] ?>
+                <td class="font-normal">
+                    <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>"  class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">activate</a>
+                    <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">suspend</a>
+                    <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
                 </td>
                 <?php } ?>
 
@@ -199,6 +203,8 @@ $tag = new Tag("");
                 <th class="font-normal">Student Id</th>
                 <th class="font-normal">Student name</th>
                 <th class="font-normal">Email</th>
+                <th class="font-normal">Status</th>
+                <th class="font-normal">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -213,6 +219,14 @@ $tag = new Tag("");
                 </td>
                 <td class="font-normal">
                 <?php echo $user["email"]; ?>
+                </td>
+                <td class="font-normal">
+                <?php echo $user["user_status"]; ?>
+                </td>
+                <td class="font-normal">
+                <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>"  class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">activate</a>
+                <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">suspend</a>
+                <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
                 </td>
 
                 </tr>
