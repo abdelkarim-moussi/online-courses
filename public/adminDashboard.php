@@ -3,18 +3,7 @@ session_start();
 include_once "../classes/Admin.php";
 include_once "../classes/Tag.php";
 
-// if(isset($_SESSION['userId'])){
-
-//     if($_SESSION['urole'] === "student" || $_SESSION['urole'] === "visitor"){
-//         header("Location: index.php");
-//     }
-//     elseif($_SESSION['urole'] === "teacher"){
-//         header("Location: index.php");
-//     }
-// }
-// else header("Location: login.php");
-
-$admin = new Admin("","","","","","");
+$admin = new Admin("", "", "", "", "", "");
 $tag = new Tag("");
 ?>
 
@@ -29,436 +18,330 @@ $tag = new Tag("");
     <title>Online Courses</title>
 </head>
 
-<body class="flex bg-[#F0F5F9] p-3 relative gap-5 overflow-auto">
+<body class="flex bg-gray-100 p-6 gap-6 overflow-auto">
 
-<!-- <button id="menu-button" type="button" class="text-[#111C2D] z-20 px-1 rounded absolute top-5 left-6 hover:text-orange-500"><i class="fa-solid fa-bars text-xl"></i></button> -->
-<section id="nav-bar" class="px-3 text-[#111C2D] w-[300px] bg-white notActive rounded-xl shadow-lg shadow-gray-400">
-            <div class="flex items-center justify-center py-2 border-b-[1px] border-gray-300">
-                <h4 class="text-blue-500 font-extrabold text-[1.1rem] mt-5">Online<span class="text-[#111C2D]">/Courses</span>
-                </h4>
-            </div>
-            
-            <div class="py-5 dach">
-                <ul class="pl-2 flex flex-col gap-y-6">
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center active-btn" ><i class="fa-solid fa-gauge"></i><a data-id ="categories" href="#">Categories</a></li>
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list-check"></i><a data-id ="addCategorie" href="#">Add Categorie</a></li>
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list-check"></i><a data-id ="tags" href="#">Tags</a></li>
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="teachers" href="#">Teachers</a></li>
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="students" href="#">Students</a></li>
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list"></i><a data-id ="courses" href="#">Courses</a></li>
-                    <li class="toggeled-item absolute w-[200px] bottom-5 text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><a href="../includes/logout.inc.php"><i class="fa-solid fa-sign-out"></i> logout</a></li>
-                </ul>
-            </div>
-            
-</section>
-    
-<main class="w-full main-section text-sm h-[100%] rounded-xl shadow-lg shadow-gray-400">
-
-    <!-- categories -->
-    <section class="w-full section text-[#111C2D] bg-white  sec1 categories active relative" id="categories">
-        <div class="border-b pb-2 flex justify-between items-center mb-5">
-            <h1 class="text-lg mb-5 capitalize">Disponible categories</h1>
+    <!-- Sidebar -->
+    <section id="nav-bar" class="bg-white w-64 rounded-xl shadow-lg fixed h-screen">
+        <div class="flex items-center justify-center py-6 border-b border-gray-200">
+            <h4 class="text-2xl font-bold text-blue-600">Online<span class="text-gray-800">Courses</span></h4>
         </div>
-
-        <table class="w-full rounded-lg">
-         <thead>
-            <tr class="text-[#686a6d] capitalize">
-            <th class="font-normal">Categorie Id</th>
-            <th class="font-normal">Categorie name</th>
-            <th class="font-normal">number of courses</th>
-            <th class="font-normal">Actions</th>
-            </tr>
-         </thead>
-         <tbody>
-         <?php 
-         foreach($admin->showCategories() as $categorie){ ?>
-            <tr>
-              <td class="font-normal">
-              <?php echo $categorie["categorie_id"]; ?>
-              </td>
-              <td class="font-normal">
-                  <?php echo $categorie["categorie_name"]; ?>
-              </td>
-              <td class="font-normal">
-              <?php foreach($admin->showCoursesNumByCat() as $numCourses){echo $numCourses["num"];} ?>
-              </td>
-              <td class="font-normal flex justify-center gap-3">
-              <!-- <button id="open">up</button> -->
-                <a href="javascript:void(0);" onclick="openModal('<?php echo $categorie['categorie_id'];?>','<?php echo $categorie['categorie_name'];?>','<?php echo $categorie['categorie_description'];?>')"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">update</a>
-                <a href="../includes/categorie.inc.php?idcat=<?php echo $categorie['categorie_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
-              </td>
-
-            </tr>
-            <?php } ?>
-         
-         </tbody>
-        </table>
-
-      <!-- update categorie -->
-        <div class="w-full hidden bg-white dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 fixed top-5 shadow-lg" id="updateCatModal">
-            <img src="../src/assets/imgs/close.png" alt="" class="w-[30px] float-right m-3 cursor-pointer" onclick="closeModal()" id="closeUpCatModal">
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class="text-xl border-b pb-3 text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                 Update categorie
-              </h1>
-    
-            <form class="space-y-4 md:space-y-6" action="../includes/categorie.inc.php" method="post" id="">
-
-                 <div>
-                      <label for="up-cat-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie name</label>
-                      <input type="text" name="up-cat-name" id="up-cat-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                 </div>
-                 <div>
-                    <label for="up-cat-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie description</label>
-                    <textarea name="up-cat-description" id="up-cat-description" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                 </div>
-
-                    <input type="hidden" name="up-cat-id" id="up-cat-id">
-
-                  <button type="submit" name="update-categorie" id="update-categorie" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">update Categorie</button>
-        
-            </form>
-
-          </div>
+        <div class="py-6">
+            <ul class="space-y-3">
+                <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold active-btn" data-id="courses"><i class="fa-solid fa-book"></i>Courses</a>
+                </li>
+                <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="categories"><i class="fa-solid fa-gauge"></i>Categories</a>
+                </li>
+                <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold " data-id="addCategorie"><i class="fa-solid fa-list-check"></i>Add Categorie</a>
+                </li>
+                <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold " data-id="tags"><i class="fa-solid fa-tags"></i>Tags</a>
+                </li>
+                <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold " data-id="teachers"><i class="fa-solid fa-users-gear"></i>Teachers</a>
+                </li>
+                <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold " data-id="students"><i class="fa-solid fa-users"></i>Students</a>
+                </li>
+                <li class="absolute bottom-6 w-56 hover:bg-blue-50 rounded-md transition duration-200">
+                    <a href="../includes/logout.inc.php" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold "><i class="fa-solid fa-sign-out"></i>Logout</a>
+                </li>
+            </ul>
         </div>
     </section>
 
-
-
-    <!-- Add Categorie section -->
-    <section ction class="w-full section text-[#111C2D] bg-white sec2" id="addCategorie">
-
-        <h1 class="text-lg mb-5 border-b pb-5 capitalize">Add new categorie</h1>
-        <form class="space-y-4 md:space-y-6" action="../includes/categorie.inc.php" method="post" id="signup-form" enctype="multipart/form-data">
-                 <div>
-                      <label for="categorie-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie name</label>
-                      <input type="text" name="categorie-name" id="categorie-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="categorie example">
-                  </div>
-                 <div>
-                    <label for="categorie-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">categorie description</label>
-                    <textarea name="categorie-description" id="categorie-description" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="categorie..."></textarea>
-                    <div class="error text-sm text-red-600"></div>
-                </div>
-                
-                  <button type="submit" name="add-categorie" id="add-categorie" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add Categorie</button>
-        
-        </form>
-    </section>
-
-    <!-- Teachers list -->
-    <section class="w-full section text-[#111C2D] bg-white sec3" id="teachers">
-        <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible Teachers</h1>
-
-        <table class="w-full rounded-lg">
-            <thead>
-                <tr class="text-[#686a6d] capitalize">
-                <th class="font-normal">Teacher Id</th>
-                <th class="font-normal">Teacher name</th>
-                <th class="font-normal">Email</th>
-                <th class="font-normal">Courses</th>
-                <th class="font-normal">Status</th>
-                <th class="font-normal">Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            
-            <?php 
-
-            foreach($admin->showUsersByRole("teacher") as $user){ ?>
-            <tr>
-                <td class="font-normal">
-                    <?php echo $user["user_id"]; ?>
-                </td>
-                <td class="font-normal">
-                <?php echo $user["firstname"] ." ".$user["lastname"]; ?>
-                </td>
-                <td class="font-normal">
-                <?php echo $user["email"]; ?>
-                </td>
-                <?php $coursesNum = $admin->calcCoursesForUser($user["user_id"])?>
-                <td class="font-normal">
-                    <?php echo $coursesNum["numcourses"] ?>
-                </td>
-                <td class="font-normal">
-                    <?php echo $user["user_status"] ?>
-                </td>
-                <td class="font-normal">
-                    <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>"  class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">activate</a>
-                    <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">suspend</a>
-                    <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
-                </td>
-                <?php } ?>
-
-            </tr>
-            <?php ?>
-            
-            </tbody>
-        </table>
-
-    </section>
-
-    <!-- Students List -->
-    <section class="w-full section text-[#111C2D] bg-white sec4" id="students">
-        <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible Students</h1>
-
-        <table class="w-full rounded-lg">
-            <thead>
-                <tr class="text-[#686a6d] capitalize">
-                <th class="font-normal">Student Id</th>
-                <th class="font-normal">Student name</th>
-                <th class="font-normal">Email</th>
-                <th class="font-normal">Status</th>
-                <th class="font-normal">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php 
-            foreach($admin->showUsersByRole("student") as $user){ ?>
-                <tr>
-                <td class="font-normal">
-                    <?php echo $user["user_id"]; ?>
-                </td>
-                <td class="font-normal">
-                <?php echo $user["firstname"] ." ".$user["lastname"]; ?>
-                </td>
-                <td class="font-normal">
-                <?php echo $user["email"]; ?>
-                </td>
-                <td class="font-normal">
-                <?php echo $user["user_status"]; ?>
-                </td>
-                <td class="font-normal">
-                <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>"  class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">activate</a>
-                <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">suspend</a>
-                <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
-                </td>
-
-                </tr>
-            <?php } ?>
-            </tbody>
-        </table>
-    </section>
-
-
-    <!-- Courses -->
-    <section class="w-full section text-[#111C2D] bg-white sec5" id="courses">
-
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-5 gap-5">
-            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-                <div class="flex gap-3 items-center">
-                    <div class="bg-blue-100 w-[50px] h-[50px] rounded-lg"></div>
-                    <h1 class="text-[2rem]"><?php $row = $admin->getNumCourses();
-                     echo $row['num']; ?>
-                    </h1>
-                </div>
-                <h3>all courses</h3>
+    <!-- Main Content -->
+    <main class="flex-1 bg-white rounded-xl shadow-lg p-6 ml-72 overflow-y-auto h-screen">
+        <!-- Categories Section -->
+        <section class="w-full section text-[#111C2D] bg-white sec1 relative" id="categories">
+            <div class="border-b pb-2 flex justify-between items-center mb-5">
+                <h1 class="text-lg mb-5 capitalize">Disponible categories</h1>
             </div>
-
-            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-                <div class="flex gap-3 items-center">
-                    <div class="bg-green-100 w-[50px] h-[50px] rounded-lg"></div>
-                    <h1 class="text-[2rem]"><?php $row = $admin->getCoursesByStatus("accepted");
-                     echo $row['num']; ?>
-                    </h1>
-                </div>
-                <h3>accepted courses</h3>
-            </div>
-
-            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-                <div class="flex gap-3 items-center">
-                    <div class="bg-orange-100 w-[50px] h-[50px] rounded-lg"></div>
-                    <h1 class="text-[2rem]"><?php $row = $admin->getCoursesByStatus("pending");
-                     echo $row['num']; ?>
-                    </h1>
-                </div>
-                <h3>pending courses</h3>
-        
-            </div>
-
-            <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-                <div class="flex gap-3 items-center">
-                    <div class="bg-red-100 w-[50px] h-[50px] rounded-lg"></div>
-                    <h1 class="text-[2rem]"><?php $row = $admin->getCoursesByStatus("refused");
-                     echo $row['num']; ?>
-                    </h1>
-                </div>
-                <h3>refused courses</h3>
-            </div>
-        </div>
-        
-        <h1 class="text-lg mb-5 border-b pb-5 capitalize">disponible courses</h1>
-        <p class="border-b pb-2 text-orange-400"><?php $row = $admin->getCoursesByStatus("pending");
-                     if($row['num'] == 0) {
-                        echo "Oops! there is no courses";
-                     } ?>
-        </p >
-        <table class="w-full rounded-lg">
-            <thead>
-                <tr class="text-[#686a6d] capitalize">
-                <th class="font-normal">course Id</th>
-                <th class="font-normal max-w-[200px]">course title</th>
-                <th class="font-normal">teacher name</th>
-                <th class="font-normal">status</th>
-                <th class="font-normal">actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <?php
-                foreach($admin->showCourses() as $result){ ?>
-                    <tr>
-                        <td class="font-normal">
-                            <?php echo $result["course_id"];?>
-                        </td>
-                        <td class="font-normal">
-                        <?php echo $result["title"];?>
-                        </td>
-                        <td class="font-normal">
-                        <?php echo $result["firstname"];?>
-                        </td>
-                        <td class="font-normal">
-                            <p class="bg-blue-50 rounded-md"><?php echo $result["status"]; ?></p>
-                        </td>
-                        <td class="font-normal flex justify-center gap-3">
-                            <?php if($result['status'] === 'pending'){ ?>
-                                <a href="../includes/course.inc.php?action=accept?<?php echo $result['course_id']; ?>" class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">accept</a>
-                                <a href="../includes/course.inc.php?action=refuse?<?php echo $result['course_id']; ?>" class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">refuse</i></a>
-                            <?php } 
-                                  else{ ?>
-                                <a href="../includes/course.inc.php?action=cancel?<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">cancel</i></a>
-                            <?php }?>
-                        </td>
+            <table class="w-full rounded-lg text-sm">
+                <thead>
+                    <tr class="text-[#686a6d] capitalize">
+                        <th class="font-normal">Categorie Id</th>
+                        <th class="font-normal">Categorie name</th>
+                        <th class="font-normal">number of courses</th>
+                        <th class="font-normal">Actions</th>
                     </tr>
-                <?php } ?>
+                </thead>
+                <tbody>
+                    <?php foreach ($admin->showCategories() as $categorie) { ?>
+                        <tr class="hover:bg-gray-50 transition duration-200">
+                            <td class="px-4 py-3"><?php echo $categorie["categorie_id"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $categorie["categorie_name"]; ?></td>
+                            <td class="px-4 py-3"><?php foreach ($admin->showCoursesNumByCat() as $numCourses) {
+                                                        echo $numCourses["num"];
+                                                    } ?></td>
+                            <td class="px-4 py-3 flex gap-3">
+                                <a href="javascript:void(0);" onclick="openModal('<?php echo $categorie['categorie_id']; ?>', '<?php echo $categorie['categorie_name']; ?>', '<?php echo $categorie['categorie_description']; ?>')" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Update</a>
+                                <a href="../includes/categorie.inc.php?idcat=<?php echo $categorie['categorie_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </section>
 
-            </tbody>
-
-        </table>
-        
-    </section>
-    
-    <section class="w-full section text-[#111C2D] bg-white sec8 relative" id="tags">
-        <div class="border-b pb-5 flex justify-between items-center">
-            <h1 class="text-lg mb-5 capitalize">Disponible Tags</h1>
-            <button id="addnewcat" onclick="openTagModal()" class="bg-blue-500 px-3 py-1 text-sm rounded-md shadow-md text-white capitalize hover:bg-blue-600">add new tag</button>
-        </div>
-        <table class="w-full rounded-lg">
-            <thead>
-                <tr>
-                    <th class="font-normal">tag id</th>
-                    <th class="font-normal">tag name</th>
-                    <th class="font-normal">actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $tags = $tag->getTags();
-                foreach($tags as $row){
-                ?>
-                <tr>
-                    <td class="font-normal"><?php echo $row["tag_id"]; ?></td>
-                    <td class="font-normal"><?php echo $row["tag_name"]; ?></td>
-                    <td class="font-normal"><a class="bg-red-100 hover:bg-red-200 py-1 px-3 rounded-md" href="../includes/tag.in.php?idtag=<?php echo $row['tag_id'];?>">delete</a></td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-
-
-        <div class="w-full hidden bg-white dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 fixed top-5 right-10 shadow-lg rounded-lg" id="tag-modal">
-            <img src="../src/assets/imgs/close.png" alt="" class="w-[30px] float-right m-3 cursor-pointer" onclick="closeTagModal()" id="close-tag-modal">
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class="text-xl border-b pb-3 text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                 add tag
-              </h1>
-    
-            <form class="space-y-4 md:space-y-6" action="../includes/tag.in.php" method="post">
-
-                 <div>
-                      <label for="tag-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tag name</label>
-                      <input type="text" name="tag-name" id="tag-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                 </div>
-        
-                  <button type="submit" name="add-tag" id="add-tag" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">ajouter tag</button>
-        
+        <!-- Add Categorie Section -->
+        <section class="w-full section text-[#111C2D] bg-white sec2" id="addCategorie">
+            <h1 class="text-lg mb-5 border-b pb-5 capitalize">Add new categorie</h1>
+            <form class="space-y-4 md:space-y-6" action="../includes/categorie.inc.php" method="post" id="signup-form" enctype="multipart/form-data">
+                <div>
+                    <label for="categorie-name" class="block text-sm font-medium text-gray-700">Categorie Name</label>
+                    <input type="text" name="categorie-name" id="categorie-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="categorie-description" class="block text-sm font-medium text-gray-700">Categorie Description</label>
+                    <textarea name="categorie-description" id="categorie-description" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                <button type="submit" name="add-categorie" id="add-categorie" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add Categorie</button>
             </form>
+        </section>
 
-          </div>
+        <!-- Teachers Section -->
+        <section class="w-full section text-[#111C2D] bg-white sec3" id="teachers">
+            <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible Teachers</h1>
+            <table class="w-full text-sm rounded-lg">
+                <thead>
+                    <tr class="text-[#686a6d] capitalize">
+                        <th class="font-normal">Teacher Id</th>
+                        <th class="font-normal">Teacher name</th>
+                        <th class="font-normal">Email</th>
+                        <th class="font-normal">Courses</th>
+                        <th class="font-normal">Status</th>
+                        <th class="font-normal">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($admin->showUsersByRole("teacher") as $user) { ?>
+                        <tr class="hover:bg-gray-50 transition duration-200">
+                            <td class="px-4 py-3"><?php echo $user["user_id"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user["firstname"] . " " . $user["lastname"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user["email"]; ?></td>
+                            <td class="px-4 py-3"><?php $coursesNum = $admin->calcCoursesForUser($user["user_id"]);
+                                                    echo $coursesNum["numcourses"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user["user_status"]; ?></td>
+                            <td class="px-4 py-3 flex gap-3">
+                                <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Activate</a>
+                                <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Suspend</a>
+                                <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Students Section -->
+        <section class="w-full section text-[#111C2D] bg-white sec4" id="students">
+            <h1 class="text-lg mb-5 border-b pb-5 capitalize">Disponible Students</h1>
+            <table class="w-full rounded-lg text-sm">
+                <thead>
+                    <tr class="text-[#686a6d] capitalize">
+                        <th class="font-normal">Student Id</th>
+                        <th class="font-normal">Student name</th>
+                        <th class="font-normal">Email</th>
+                        <th class="font-normal">Status</th>
+                        <th class="font-normal">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($admin->showUsersByRole("student") as $user) { ?>
+                        <tr class="hover:bg-gray-50 transition duration-200">
+                            <td class="px-4 py-3"><?php echo $user["user_id"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user["firstname"] . " " . $user["lastname"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user["email"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user["user_status"]; ?></td>
+                            <td class="px-4 py-3 flex gap-3">
+                                <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Activate</a>
+                                <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Suspend</a>
+                                <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Courses Section -->
+        <section class="w-full section text-[#111C2D] bg-white sec5 active" id="courses">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-5">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-book text-blue-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"><?php $row = $admin->getNumCourses();
+                                                        echo $row['num']; ?></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">All Courses</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-check text-green-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"><?php $row = $admin->getCoursesByStatus("accepted");
+                                                        echo $row['num']; ?></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">Accepted Courses</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-orange-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-clock text-orange-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"><?php $row = $admin->getCoursesByStatus("pending");
+                                                        echo $row['num']; ?></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">Pending Courses</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-times text-red-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"><?php $row = $admin->getCoursesByStatus("refused");
+                                                        echo $row['num']; ?></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">Refused Courses</h3>
+                </div>
+            </div>
+            <h1 class="text-lg mb-5 border-b pb-5 capitalize">disponible courses</h1>
+            <p class="border-b pb-2 text-orange-400"><?php $row = $admin->getCoursesByStatus("pending");
+                                                        if ($row['num'] == 0) {
+                                                            echo "Oops! there is no courses";
+                                                        } ?>
+            </p>
+            <table class="w-full rounded-lg text-sm">
+                <thead>
+                    <tr class="text-[#686a6d] capitalize">
+                        <th class="font-normal">course Id</th>
+                        <th class="font-normal max-w-[200px]">course title</th>
+                        <th class="font-normal">teacher name</th>
+                        <th class="font-normal">status</th>
+                        <th class="font-normal">actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($admin->showCourses() as $result) { ?>
+                        <tr class="hover:bg-gray-50 transition duration-200">
+                            <td class="px-4 py-3"><?php echo $result["course_id"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $result["title"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $result["firstname"]; ?></td>
+                            <td class="px-4 py-3">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm"><?php echo $result["status"]; ?></span>
+                            </td>
+                            <td class="px-4 py-3 flex gap-3">
+                                <?php if ($result['status'] === 'pending') { ?>
+                                    <a href="../includes/course.inc.php?action=accept?<?php echo $result['course_id']; ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Accept</a>
+                                    <a href="../includes/course.inc.php?action=refuse?<?php echo $result['course_id']; ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Refuse</a>
+                                <?php } else { ?>
+                                    <a href="../includes/course.inc.php?action=cancel?<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Cancel</a>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Tags Section -->
+        <section class="w-full section text-[#111C2D] bg-white sec8 relative" id="tags">
+            <div class="border-b pb-5 flex justify-between items-center">
+                <h1 class="text-lg mb-5 capitalize">Disponible Tags</h1>
+                <button id="addnewcat" onclick="openTagModal()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add New Tag</button>
+            </div>
+            <table class="w-full rounded-lg text-sm">
+                <thead>
+                    <tr>
+                        <th class="font-normal">tag id</th>
+                        <th class="font-normal">tag name</th>
+                        <th class="font-normal">actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $tags = $tag->getTags();
+                    foreach ($tags as $row) { ?>
+                        <tr class="hover:bg-gray-50 transition duration-200">
+                            <td class="px-4 py-3"><?php echo $row["tag_id"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $row["tag_name"]; ?></td>
+                            <td class="px-4 py-3">
+                                <a href="../includes/tag.in.php?idtag=<?php echo $row['tag_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="updateCatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Update Categorie</h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form action="../includes/categorie.inc.php" method="post" class="space-y-4">
+                <div>
+                    <label for="up-cat-name" class="block text-sm font-medium text-gray-700">Categorie Name</label>
+                    <input type="text" name="up-cat-name" id="up-cat-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="up-cat-description" class="block text-sm font-medium text-gray-700">Categorie Description</label>
+                    <textarea name="up-cat-description" id="up-cat-description" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                <input type="hidden" name="up-cat-id" id="up-cat-id">
+                <button type="submit" name="update-categorie" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Update Categorie</button>
+            </form>
         </div>
-    </section>
+    </div>
 
-</main>
+    <div id="tag-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Add Tag</h2>
+                <button onclick="closeTagModal()" class="text-gray-500 hover:text-gray-700"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form action="../includes/tag.in.php" method="post" class="space-y-4">
+                <div>
+                    <label for="tag-name" class="block text-sm font-medium text-gray-700">Tag Name</label>
+                    <input type="text" name="tag-name" id="tag-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button type="submit" name="add-tag" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add Tag</button>
+            </form>
+        </div>
+    </div>
 
+    <script>
+        const catModal = document.getElementById("updateCatModal");
+        const tagModal = document.getElementById("tag-modal");
 
+        function openModal(catId, catName, catDesc) {
+            catModal.classList.remove("hidden");
+            document.getElementById("up-cat-name").value = catName;
+            document.getElementById("up-cat-description").value = catDesc;
+            document.getElementById("up-cat-id").value = catId;
+        }
 
+        function closeModal() {
+            catModal.classList.add("hidden");
+        }
 
+        function openTagModal() {
+            tagModal.classList.remove("hidden");
+        }
 
-<script>
+        function closeTagModal() {
+            tagModal.classList.add("hidden");
+        }
+    </script>
 
-const catModal = document.getElementById("updateCatModal");
-var catId;
-var catName;
-var catDesc;
-
-function openModal(catId,catName,catDesc){
-
-   catModal.classList.remove("hidden");
-
-   document.getElementById("up-cat-name").value = catName;
-   document.getElementById("up-cat-description").textContent = catDesc;
-   document.getElementById("up-cat-id").value = catId;
-
-}
-
-const toggledItems = document.querySelectorAll(".toggeled-item");
-const sections = document.querySelectorAll("section");
-const globalSection = document.querySelector("body");
-
-   for(let i = 0; i < toggledItems.length; i++){
-       toggledItems[i].addEventListener("click", function (){
-           let curentSection = document.querySelectorAll(".active-btn");
-           curentSection[0].classList.remove("active-btn")
-           this.className += " active-btn";
-       })
-   }
-
-   globalSection.addEventListener('click',(e)=>{
-    
-     const id = e.target.dataset.id;
-
-      if(id){
-        
-        toggledItems.forEach(item=>{
-           item.classList.remove("active");
-        })
-
-        sections.forEach(section=>{
-           section.classList.remove("active");
-        })
-        // e.target.classList.add("active");
-
-        let element = document.getElementById(id);
-        element.classList.add("active");
-        console.log(element);
-        
-      }
-   })
- 
-function closeModal(){
-   document.getElementById("updateCatModal").classList.add("hidden");
-}
-
-function openTagModal(){
-   document.getElementById("tag-modal").classList.remove("hidden");
-}
-
-function closeTagModal(){
-    document.getElementById("tag-modal").classList.add("hidden");
-}
-
-</script>
-
-
-<script src="../src/assets/js/script.js?v=<?php echo time(); ?>"></script>
+    <script src="../src/assets/js/script.js?v=<?php echo time();?>"></script>
 </body>
 </html>

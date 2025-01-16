@@ -1,6 +1,7 @@
 <?php
 
 class Categorie{
+    
     private $categorie_name;
     private $description;
 
@@ -24,7 +25,5 @@ class Categorie{
     public function setDescription($description){
         $this->description = $description;
     }
-
-
 
 }

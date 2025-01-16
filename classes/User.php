@@ -174,7 +174,6 @@ abstract class User{
 
     }
 
-
     public function updateUser($userId,$firstname,$lastname,$email,$image){
 
         $db = DataBase::getInstance();
@@ -196,7 +195,7 @@ abstract class User{
         return $result;
     }
 
-
+   
 
 }
 

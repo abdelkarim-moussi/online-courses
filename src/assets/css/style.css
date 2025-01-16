@@ -3,11 +3,7 @@
 *{
     font-family: "Poppins", sans-serif;
 }
-#nav-bar{
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
+
 
 #nav-bar,.main-section{
     max-height: 95vh;
@@ -44,15 +40,10 @@ th,td{
 }
 
 .active-btn{
-    background-color : #3B82F6;
-    color: #fff;
+    background-color : #EFF6FF;
     border-radius: 5px;
-    box-shadow: 2px 2px 5px #5a5b5b;
 }
 
-.toggeled-item:hover{
-    box-shadow: 2px 2px 5px #5a5b5b;
-}
 
 .section{
     width: 100%;

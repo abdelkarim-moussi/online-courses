@@ -1,6 +1,6 @@
 <?php
-
 include_once "User.php";
+include_once "Course.php";
 
 class Teacher extends User{
 
@@ -8,5 +8,8 @@ class Teacher extends User{
         parent::__construct($firstname,$lastname,$email, $role, $photo, $password);
     }
 
+    public function addCourse(){
+
+    }
   
 }

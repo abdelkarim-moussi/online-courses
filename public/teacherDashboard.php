@@ -43,11 +43,16 @@ include_once "../classes/Course.php";
             
             <div class="py-5 dach">
                 <ul class="pl-2 flex flex-col gap-y-6">
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center active-btn" ><i class="fa-solid fa-gauge"></i><a data-id ="courses" href="#">Courses</a></li>
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-list-check"></i><a data-id ="add-course" href="#">Add Course</a></li>
-                    <li class="toggeled-item text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><i class="fa-solid fa-users-gear"></i><a data-id ="profile" href="#">Profile</a></li>
-                    
-                    <li class="toggeled-item absolute w-[200px] bottom-5 text-sm font-semibold tracking-wide  hover:bg-blue-500 hover:text-white hover:rounded-md py-1 pl-2 flex gap-3 items-center" ><a href="../includes/logout.inc.php"><i class="fa-solid fa-sign-out"></i> logout</a></li>
+                    <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                        <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold active-btn" data-id="courses"><i class="fa-solid fa-book"></i>Courses</a>
+                    </li>
+                    <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                        <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="add-course"><i class="fa-solid fa-add"></i>Add Course</a>
+                    </li>
+                    <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                        <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="profile"><i class="fa-solid fa-user"></i>Profile</a>
+                    </li>
+                   
                 </ul>
             </div>
             
@@ -57,49 +62,46 @@ include_once "../classes/Course.php";
 
 
 
-<!-- Articles -->
+<!-- Courses -->
 <section class="w-full section text-[#111C2D] bg-white rounded-lg shadow-md sec6 active relative" id="courses">
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-5 gap-5">
-        <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-            <div class="flex gap-3 items-center">
-                <div class="bg-blue-100 w-[50px] h-[50px] rounded-lg"></div>
-
-                <h3 class="text-[2rem]"></h3>
-                
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-5">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-book text-blue-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">All Courses</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-check text-green-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">Accepted Courses</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-orange-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-clock text-orange-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">Pending Courses</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-times text-red-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">Refused Courses</h3>
+                </div>
             </div>
-            <h3>My courses</h3>
-        </div>
-
-        <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-            <div class="flex gap-3 items-center">
-                <div class="bg-green-100 w-[50px] h-[50px] rounded-lg"></div>
-                
-                <h3 class="text-[2rem]"></h3>
-               
-            </div>
-            <h3>accepted courses</h3>
-        </div>
-
-        <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-            <div class="flex gap-3 items-center">
-                <div class="bg-orange-100 w-[50px] h-[50px] rounded-lg"></div>
-               
-                <h3 class="text-[2rem]"></h3>
-             
-            </div>
-            <h3>pending courses</h3>
-        </div>
-
-        <div class="flex flex-col rounded-lg shadow-md px-5 py-6 gap-3">
-            <div class="flex gap-3 items-center">
-                <div class="bg-red-100 w-[50px] h-[50px] rounded-lg"></div>
-                
-                <h3 class="text-[2rem]"></h3>
-               
-            </div>
-            <h3>refused courses</h3>
-        </div>
-    </div>
 
     <div class="flex items-enter justify-between mb-5 border-b pb-5">
     <h1 class="text-lg capitalize">Disponible courses</h1>
@@ -183,23 +185,23 @@ include_once "../classes/Course.php";
     <h1 class="text-lg mb-5 border-b pb-5 capitalize">Add new course</h1>
     <form class="space-y-4 md:space-y-6" action="../includes/article.inc.php" method="POST" id="signup-form" enctype="multipart/form-data">
                  <div>
-                      <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                      <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="article name">
+                      <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                      <input type="text" name="title" id="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50" placeholder="course title">
                   </div>
                  <div>
-                    <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Content</label>
-                    <textarea name="content" id="content"  class="h-[200px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="article content..."></textarea>
+                    <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                    <textarea name="content" id="content"  class="h-[200px] mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50" placeholder="course content..."></textarea>
                     <div class="error text-sm text-red-600"></div>
                 </div>
                  <div>
-                    <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">image</label>
-                    <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="image" class="block text-sm font-medium text-gray-700">image</label>
+                    <input type="file" name="image" id="image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
                     <div class="error text-sm text-red-600"></div>
                 </div>
             
                 <div>
-                      <label for="categorie" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categorie</label>
-                      <select name="categorie" id="categorie" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <label for="categorie" class="block text-sm font-medium text-gray-700">Categorie</label>
+                      <select name="categorie" id="categorie" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
                     
                       <option value=""></option>
                       
