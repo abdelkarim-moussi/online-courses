@@ -1,18 +1,19 @@
 <?php
-include_once "../classes/User.php";
-if(isset($_GET["action"])){
+include_once "../classes/Course.php";
+
+if(isset($_GET['action'])){
     $array = explode("?",$_GET["action"]);
     $action = $array[0];
-    $userId = $array[1];
+    $courseId = $array[1];
 
     switch($action){
-        case 'activate' : User::changeUserStatus($userId,'active');
+        case 'accept' : User::changeUserStatus($courseId,'accepted');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'suspend' : User::changeUserStatus($userId,'suspended');
+        case 'refuse' : User::changeUserStatus($courseId,'refused');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'delete' : User::deleteUser($userId);
+        case 'delete' : User::deleteCourse($courseId);
         header("Location: ../public/adminDashboard.php");
         break;
     }

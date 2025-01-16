@@ -317,11 +317,11 @@ $tag = new Tag("");
                         </td>
                         <td class="font-normal flex justify-center gap-3">
                             <?php if($result['status'] === 'pending'){ ?>
-                                <a href="../includes/article.inc.php?acidart=<?php echo $result['course_id']; ?>" class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">accept</a>
-                                <a href="../includes/article.inc.php?refidart=<?php echo $result['course_id']; ?>" class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">refuse</i></a>
+                                <a href="../includes/course.inc.php?action=accept?<?php echo $result['course_id']; ?>" class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">accept</a>
+                                <a href="../includes/course.inc.php?action=refuse?<?php echo $result['course_id']; ?>" class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">refuse</i></a>
                             <?php } 
                                   else{ ?>
-                                <a href="../includes/article.inc.php?idart=<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
+                                <a href="../includes/course.inc.php?action=delete?<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
                             <?php }?>
                         </td>
                     </tr>
