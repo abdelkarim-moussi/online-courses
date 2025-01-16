@@ -4,6 +4,7 @@ session_start();
 include_once "../classes/Teacher.php";
 include_once "../classes/Admin.php";
 include_once "../classes/User.php";
+include_once "../classes/Course.php";
 
 // if(isset($_SESSION['userId'])){
 //     if($_SESSION['urole'] === "admin"){
@@ -114,32 +115,38 @@ include_once "../classes/User.php";
             </tr>
          </thead>
          <tbody>
-         
+            
+         <?php 
+            $teacherId = $_SESSION["userId"];
+            $course = Course::getCoursesByTeacherId($teacherId);
+            foreach($course as $row ){
+         ?>
             <tr>
               <td class="font-normal">
-                
+                <?php echo $row["course_id"];?>
               </td>
               <td class="font-normal">
-              
+              <?php echo $row["title"];?>
               </td>
               <td class="font-normal">
-              
+              <?php echo $row["firstname"]." ".$row["lastname"];?>
               </td>
               <td class="font-normal">
-                  <p class="bg-blue-50 rounded-md"></p>
+                  <p class="bg-blue-50 rounded-md"><?php echo $row["status"];?></p>
               </td>
               <td class="font-normal flex justify-center gap-3">
-                <a href="javascript:void(0);" onclick="openModal('<?php echo $course['course_id']; ?>','<?php echo $course['title']; ?>','<?php echo $course['content']; ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
+                <a href="javascript:void(0);" onclick="openUpCourseModal('<?php echo $course['course_id']; ?>','<?php echo $course['title']; ?>','<?php echo $course['content']; ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
                 <a href="../includes/course.inc.php?action=delete?<?php echo $course['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
               </td>
             </tr>
+            <?php } ?>
          </tbody>
       </table>
     
     
     <!-- update course -->
     <div class="w-full hidden bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 absolute top-5" id="updateCourseModal">
-        <img src="../public/assets/imgs/close.png" alt="" class="w-[30px] float-right m-3 cursor-pointer" onclick="closeCorseModal()" id="closeUpCatModal">
+        <img src="../public/assets/imgs/close.png" alt="" class="w-[30px] float-right m-3 cursor-pointer" onclick="closeCourseModal()" id="closeUpCatModal">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 class="text-xl border-b pb-3 text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                  Update course
@@ -262,16 +269,16 @@ include_once "../classes/User.php";
 
 <script>
 
-const artModal = document.getElementById("updateCourseModal");
+const courseModal = document.getElementById("updateCourseModal");
 const profileModal = document.getElementById("profileModal");
 var artId;
 var title;
 var content;
 var image;
 
-function openModal(artId,title,content){
+function openUpCourseModal(artId,title,content){
 
-    artModal.classList.remove("hidden");
+    courseModal.classList.remove("hidden");
 
    document.getElementById("title").value = title;
    document.getElementById("content").textContent = content;
@@ -279,8 +286,8 @@ function openModal(artId,title,content){
 
 }
 
-function closeCorseModal(){
-    artModal.classList.add("hidden");
+function closeCourseModal(){
+    courseModal.classList.add("hidden");
 }
 
 
@@ -298,7 +305,7 @@ document.getElementById("userId").value = userId;
 
 function closeInfoModal(){
 
-profileModal.classList.add("hidden");
+  profileModal.classList.add("hidden");
 
 }
 </script>

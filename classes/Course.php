@@ -75,5 +75,17 @@ class Course{
         $deleteCourse = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
         $deleteCourse->execute([$courseId]);
     }
+
+    public static function getCoursesByTeacherId($teacherId){
+
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $selectCourses = $conn->prepare("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id
+        WHERE courses.user_id = ?");
+        $selectCourses->execute([$teacherId]);
+        return $result = $selectCourses->fetchAll();
+        
+    }
    
 }
