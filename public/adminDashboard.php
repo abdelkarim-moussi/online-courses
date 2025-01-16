@@ -321,7 +321,7 @@ $tag = new Tag("");
                                 <a href="../includes/course.inc.php?action=refuse?<?php echo $result['course_id']; ?>" class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">refuse</i></a>
                             <?php } 
                                   else{ ?>
-                                <a href="../includes/course.inc.php?action=delete?<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
+                                <a href="../includes/course.inc.php?action=cancel?<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">cancel</i></a>
                             <?php }?>
                         </td>
                     </tr>

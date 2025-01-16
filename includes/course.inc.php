@@ -13,7 +13,7 @@ if(isset($_GET['action'])){
         case 'refuse' : Course::changeCourseStatus($courseId,'refused');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'delete' : Course::deleteCourse($courseId);
+        case 'cancel' : Course::changeCourseStatus($courseId,'canceled');
         header("Location: ../public/adminDashboard.php");
         break;
     }

@@ -1,4 +1,5 @@
 <?php
+include_once "../config/DataBase.php";
 class Course{
     private $teacherId;
     private $categorieId;
@@ -55,6 +56,16 @@ class Course{
     }
     public function setCover($cover){
         $this->cover = $cover;
+    }
+
+
+    public static function changeCourseStatus($status,$courseId){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $changeCourseSTatus = $conn->prepare("UPDATE courses SET status = ? WHERE course_id = ?");
+        $changeCourseSTatus->execute([$status,$courseId]);
+
     }
    
 }
