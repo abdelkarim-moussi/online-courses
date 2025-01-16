@@ -156,6 +156,7 @@ $tag = new Tag("");
                 <th class="font-normal">Teacher name</th>
                 <th class="font-normal">Email</th>
                 <th class="font-normal">Courses</th>
+                <th class="font-normal">Status</th>
                 <th class="font-normal">Actions</th>
                 </tr>
             </thead>
@@ -178,6 +179,10 @@ $tag = new Tag("");
                 <?php $coursesNum = $admin->calcCoursesForUser($user["user_id"])?>
                 <td class="font-normal">
                     <?php echo $coursesNum["numcourses"] ?>
+                </td>
+                <td class="font-normal">
+                    <?php echo $user["user_status"] ?>
+                </td>
                 <td class="font-normal">
                     <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>"  class="bg-green-100 hover:bg-green-200 rounded-md py-1 px-3">activate</a>
                     <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>"  class="bg-orange-100 hover:bg-orange-200 rounded-md py-1 px-3">suspend</a>

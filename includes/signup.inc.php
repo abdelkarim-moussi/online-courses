@@ -1,14 +1,14 @@
 <?php
-include_once "../classes/Visitor.php";
+include_once "../classes/User.php";
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     
-    $email = $_POST["email"];
-    $firstname = $_POST["firstname"];
-    $lastname = $_POST["lastname"];
-    $role = $_POST["role"];
-    $password = $_POST["password"];
-    $passConfirm = $_POST["confirm-password"];
+    $email = htmlspecialchars($_POST["email"]);
+    $firstname = htmlspecialchars($_POST["firstname"]);
+    $lastname = htmlspecialchars($_POST["lastname"]);
+    $role = htmlspecialchars($_POST["role"]);
+    $password = htmlspecialchars($_POST["password"]);
+    $passConfirm = htmlspecialchars($_POST["confirm-password"]);
 
     $filename = $_FILES["image"]["name"];
     $fileTmpName = $_FILES["image"]["tmp_name"];
@@ -26,7 +26,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         exit();
     }
     
-    $visitor = new Visitor();
-    $visitor->createAccount($firstname, $lastname, $email, $role, $photo, $password);
+    User::createAccount($firstname, $lastname, $email, $role, $photo, $password);
   
 }

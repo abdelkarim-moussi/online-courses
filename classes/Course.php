@@ -67,5 +67,13 @@ class Course{
         $changeCourseSTatus->execute([$status,$courseId]);
 
     }
+
+    public static function deleteCourse($courseId){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $deleteCourse = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
+        $deleteCourse->execute([$courseId]);
+    }
    
 }

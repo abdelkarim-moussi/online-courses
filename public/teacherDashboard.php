@@ -102,7 +102,6 @@ include_once "../classes/User.php";
 
     <div class="flex items-enter justify-between mb-5 border-b pb-5">
     <h1 class="text-lg capitalize">Disponible courses</h1>
-    <button id="addnewart" class="bg-blue-200 px-3 py-1 text-sm rounded-md capitalize hover:bg-blue-500 hover:text-white">add new course</button>
     </div>
     <table class="w-full rounded-lg text-sm">
          <thead>
@@ -131,7 +130,7 @@ include_once "../classes/User.php";
               </td>
               <td class="font-normal flex justify-center gap-3">
                 <a href="javascript:void(0);" onclick="openModal('<?php echo $course['course_id']; ?>','<?php echo $course['title']; ?>','<?php echo $course['content']; ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
-                <a href="../includes/course.inc.php?idart=<?php echo $course['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
+                <a href="../includes/course.inc.php?action=delete?<?php echo $course['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
               </td>
             </tr>
          </tbody>
