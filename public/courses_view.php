@@ -19,8 +19,8 @@ $catDao = new CategorieDao();
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold text-blue-600">EduOnline</div>
             <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a>
-                <a href="courses.html" class="text-blue-600">Courses</a>
+                <a href="index.php" class="text-gray-600 hover:text-blue-600">Home</a>
+                <a href="courses_view.php" class="text-blue-600">Courses</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Categories</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
@@ -159,6 +159,6 @@ $catDao = new CategorieDao();
         </div>
     </footer>
 
-    <script src="courses.js"></script>
+    <script src="../src/assets/js"></script>
 </body>
 </html>

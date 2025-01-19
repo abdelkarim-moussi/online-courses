@@ -111,26 +111,5 @@ class Course{
     }
    
 
-
-    public static function changeCourseStatus($status,$courseId){
-        $db = DataBase::getInstance();
-        $conn = $db->getConnection();
-
-        $changeCourseSTatus = $conn->prepare("UPDATE courses SET status = ? WHERE course_id = ?");
-        $changeCourseSTatus->execute([$status,$courseId]);
-
-    }
-
-    public static function deleteCourse($courseId){
-        $db = DataBase::getInstance();
-        $conn = $db->getConnection();
-
-        $deleteCourse = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
-        $deleteCourse->execute([$courseId]);
-    }
-
-   
-
-
    
 }

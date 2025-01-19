@@ -1,9 +1,23 @@
 <?php
 session_start();
+
 include_once "../dao/CategorieDao.php";
 include_once "../dao/UserDao.php";
 include_once "../dao/CourseDao.php";
 include_once "../dao/tagDao.php";
+
+if(isset($_SESSION["userId"])){
+
+    if($_SESSION["role"] === "teacher"){
+        header("Location: teacherDashboard.php");
+    }
+    else if($_SESSION["role"] === "student"){
+        header("Location: index.php");
+    }
+    
+}
+// else header("Location: login.php");
+
 
 $userDao = new UserDao();
 $catDao = new CategorieDao();
@@ -237,19 +251,22 @@ $tagDao = new TagDao();
                 <tbody>
                     <?php foreach ($courseDao->showCourses() as $course) { ?>
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="px-4 py-3"><?php echo $course->getCourseId(); ?></td>
-                            <td class="px-4 py-3"><?php echo $course->getTitle(); ?></td>
-                            <td class="px-4 py-3"><?php echo $course->getTeacher()->getFullName(); ?></td>
+                            <td class="px-4 py-3"><?=$course->getCourseId(); ?></td>
+                            <td class="px-4 py-3"><?=$course->getTitle(); ?></td>
+                            <td class="px-4 py-3"><?=$course->getTeacher()->getFullName(); ?></td>
                             <td class="px-4 py-3">
-                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm"><?php echo $course->getStatus(); ?></span>
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm"><?=$course->getStatus(); ?></span>
                             </td>
 
                             <td class="px-4 py-3 flex gap-3">
-                                <?php if ($result['status'] === 'pending') { ?>
-                                    <a href="../includes/course.inc.php?action=accept?<?php echo $course->getCourseId(); ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Accept</a>
-                                    <a href="../includes/course.inc.php?action=refuse?<?php echo $course->getCourseId(); ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Refuse</a>
-                                <?php } else { ?>
-                                    <a href="../includes/course.inc.php?action=cancel?<?php echo $course->getCourseId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Cancel</a>
+                                <?php if ($course->getStatus() === 'pending') { ?>
+                                    <a href="../includes/course.inc.php?action=accept?<?=$course->getCourseId(); ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Accept</a>
+                                    <a href="../includes/course.inc.php?action=refuse?<?=$course->getCourseId(); ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Refuse</a>
+                                    <?php } else if($course->getStatus() === 'canceled'){?>
+                                        <a href="../includes/course.inc.php?action=delete?<?=$course->getCourseId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                                    <?php  ?>
+                                    <?php } else { ?>
+                                    <a href="../includes/course.inc.php?action=cancel?<?=$course->getCourseId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Cancel</a>
                                 <?php } ?>
                             </td>
                         </tr>

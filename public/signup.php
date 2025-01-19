@@ -24,12 +24,27 @@ session_start();
     <link rel="stylesheet" href="../src/assets/css/style.css?v=<?php echo time(); ?>">
     <title>Online Courses</title>
 </head>
-<body class="px-4 bg-[#F0F5F9] flex flex-col gap-5 relative">
+<body class="bg-[#F0F5F9] flex flex-col gap-5 relative">
 
-<header class="header w-full max-w-[900px] fixed mx-auto bg-white py-3 px-5 rounded-lg shadow-md flex items-center justify-between left-[50%] translate-x-[-50%]">
-  <h1 class="text-blue-500 font-semibold text-[1.2rem] capitalize">Online/<span class="text-[#111C2D]">Courses</span></h1>
-  <a href="login.php" class="hover:text-blue-500 underline">login</a>
-</header>
+<header class="fixed w-full bg-white shadow-sm z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-blue-600">EduOnline</div>
+            <div class="hidden md:flex space-x-8 text-sm">
+                <a href="index.php" class="text-gray-600 hover:text-blue-600">Home</a>
+                <a href="courses_view.php" class="text-blue-600">Courses</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Categories</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
+            </div>
+            <div class="hidden md:flex space-x-4 text-sm">
+                <a href="login.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</a>
+                <a href="#" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
+            </div>
+            <button class="md:hidden text-gray-600">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </nav>
+    </header>
 
 <!-- sign up form -->
 <section class="bg-gray-50 dark:bg-gray-900 py-10">

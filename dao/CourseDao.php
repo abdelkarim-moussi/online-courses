@@ -63,14 +63,14 @@ class CourseDao implements ICourseDao{
 
         try{
             $selectCourses = $this->connection->prepare("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id
-        WHERE courses.user_id = ?");
-        $selectCourses->execute([$userId]);
-        $courses = [];
-    
+            WHERE courses.user_id = ?");
+            $selectCourses->execute([$userId]);
+            $courses = [];
+        
         while($row = $selectCourses->fetchAll()){
 
             $course = new Course();
-            $course->getTeacher()->setFullName($row["firsname"].' '.$row["lastname"]);
+            $course->getTeacher()->setFullName($row["firstname"].' '.$row["lastname"]);
             $course->getCategorie()->setCatName($row["categorie_name"]);
             $course->setTitle($row["title"]);
             $course->setContent($row["content"]);
@@ -155,6 +155,67 @@ class CourseDao implements ICourseDao{
         }
 
         else return "error execution";
+    }
+
+
+    public function getCourseById($courseId){
+
+        try{
+            $selectCourses = $this->connection->prepare("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id INNER JOIN categories ON courses.categorie_id = categories.categorie_id
+            WHERE courses.course_id = ?");
+        $selectCourses->execute([$courseId]);
+    
+            $row = $selectCourses->fetch();
+
+            $course = new Course();
+            $course->getTeacher()->setFullName($row["firstname"].' '.$row["lastname"]);
+            $course->getCategorie()->setCatName($row["categorie_name"]);
+            $course->setTitle($row["title"]);
+            $course->setContent($row["content"]);
+            $course->setType($row["content_type"]);
+            $course->setCourseId($row["course_id"]);
+            $course->setStatus($row["status"]);
+            $course->setThumbnail($row["thumbnail"]);
+            $course->setDescription($row["description"]);
+
+            return $course;
+
+        }catch(PDOException $e){
+        die("execution error".$e->getMessage());
+    }
+        
+    }
+
+    public function getNumCourseByUserId($userId){
+        try{
+            $selectCourses = $this->connection->prepare("SELECT COUNT(*) as numc FROM courses INNER JOIN users ON courses.user_id = users.user_id
+            WHERE users.user_id = ?");
+            $selectCourses->execute([$userId]);
+    
+            $row = $selectCourses->fetch();
+
+            return $row;
+
+        }catch(PDOException $e){
+        die("execution error".$e->getMessage());
+    }
+    }
+
+    public function changeCourseStatus($courseId,$status){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $changeCourseStatus = $conn->prepare("UPDATE courses SET status = ? WHERE course_id = ?");
+        $changeCourseStatus->execute([$status,$courseId]);
+
+    }
+
+    public function deleteCourse($courseId){
+        $db = DataBase::getInstance();
+        $conn = $db->getConnection();
+
+        $deleteCourse = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
+        $deleteCourse->execute([$courseId]);
     }
 }
 

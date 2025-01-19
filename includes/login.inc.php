@@ -19,7 +19,14 @@ if(isset($_POST['login'])){
         $user->setPassword($password);
         $userDao = new UserDao();
         $userDao->login($user);
-    
-        header("Location: ../public/index.php");
+
+        echo $_SESSION["urole"];
+
+        if($_SESSION['urole'] ==="teacher"){
+            header("Location: ../public/teacherDashboard.php");
+        }
+        else if($_SESSION['urole'] ==="admin"){
+            header("Location: ../public/adminDashboard.php");
+        }
     }
 }

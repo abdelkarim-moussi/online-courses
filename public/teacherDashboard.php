@@ -8,17 +8,16 @@ include_once "../dao/CourseDao.php";
 include_once "../dao/tagDao.php";
 include_once "../dao/CategorieDao.php";
 
-// if(isset($_SESSION['userId'])){
-//     if($_SESSION['urole'] === "admin"){
-//         header("Location: adminDash.php");
-//     }
-//     elseif($_SESSION['urole'] === "visitor"){
-//         header("Location: index.php");
-
-//     }
+if(isset($_SESSION['userId'])){
+    if($_SESSION['urole'] === "admin"){
+        header("Location: adminDashboard.php");
+    }
+    elseif($_SESSION['urole'] === "student"){
+        header("Location: index.php");
+    }
     
-// }
-// else header("Location: login.php");
+}
+else header("Location: login.php");
 
 $courseDao = new CourseDao();
 $categorieDao = new CategorieDao();

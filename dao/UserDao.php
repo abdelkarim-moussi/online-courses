@@ -26,6 +26,7 @@ class UserDao{
             $user->setId($row["user_id"]);
             $user->setFirstName($row['firstname']);
             $user->setLastName($row['lastname']);
+            $user->setFullName($row['lastname'].' '.$row['firstname']);
             $user->setRole($row['role']);
             $user->setStatus($row['user_status']);
             array_push($users,$user);
@@ -68,21 +69,23 @@ class UserDao{
     }
 
     public function login(User $user){
-        var_dump($user);
+        
         $userdb = $this->checkUserByEmail($user->getEmail());
 
         try {
             
             if($userdb){
             // Verify the password
-            if (!password_verify($user->getPassword(), $userdb["password"])) {
+            if (!password_verify($user->getPassword(), $userdb->getPassword())) {
                 header("Location: ../public/login.php?error=passwordincorrect");
                 exit();
             }
 
-            $_SESSION["username"] = $user["firstname"];
-            $_SESSION["userId"] = $user["user_id"];
-            $_SESSION["urole"] = $user["role"];
+            session_start();
+
+            $_SESSION["username"] = $userdb->getFirstName();
+            $_SESSION["userId"] = $userdb->getId();
+            $_SESSION["urole"] = $userdb->getRole();
 
             } 
             else {

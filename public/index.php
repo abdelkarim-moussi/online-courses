@@ -13,7 +13,7 @@
             <div class="text-2xl font-bold text-blue-600">EduHub</div>
             <div class="hidden md:flex space-x-8">
                 <a href="#" class="text-blue-600">Home</a>
-                <a href="courses.html" class="text-gray-600 hover:text-blue-600">Courses</a>
+                <a href="courses_view.php" class="text-gray-600 hover:text-blue-600">Courses</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Categories</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>

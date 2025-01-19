@@ -130,19 +130,19 @@ if(isset($_POST["add-course"])){
 if(isset($_GET['action'])){
     $array = explode("?",$_GET["action"]);
     $action = $array[0];
-    $courseId = $array[1];
+    $courseId = intval($array[1]);
 
     switch($action){
-        case 'accept' : Course::changeCourseStatus($courseId,'accepted');
+        case 'accept' : $courseDao->changeCourseStatus($courseId,'accepted');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'refuse' : Course::changeCourseStatus($courseId,'refused');
+        case 'refuse' : $courseDao->changeCourseStatus($courseId,'refused');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'cancel' : Course::changeCourseStatus($courseId,'canceled');
+        case 'cancel' : $courseDao->changeCourseStatus($courseId,'canceled');
         header("Location: ../public/adminDashboard.php");
         break;
-        case 'delete' : Course::deleteCourse($courseId);
+        case 'delete' : $courseDao->deleteCourse($courseId);
         header("Location: ../public/adminDashboard.php");
         break;
     }
