@@ -11,6 +11,7 @@ class User{
     private string $photo;
     private string $password;
     private string $status;
+    private string $fullname;
 
     public function __construct(){
     
@@ -90,9 +91,10 @@ class User{
    
     //fullname
     public function getFullName(){
-      return $this->firstname .' '.$this->lastname;
+      return $this->fullname;
     }
     public function setFullName($fullname){
+      $this->fullname = $fullname;
       return $fullname;
     }
 }

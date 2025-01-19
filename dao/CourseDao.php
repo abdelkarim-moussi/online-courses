@@ -17,22 +17,23 @@ class CourseDao implements ICourseDao{
 
     public function showCourses(){
 
-        $selectCoureses = $this->connection->query("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id");
+        $selectCoureses = $this->connection->query("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id INNER JOIN categories ON courses.categorie_id = categories.categorie_id ");
         $selectCoureses->execute();
         $courses = [];
 
         while($row = $selectCoureses->fetch()){
 
             $course = new Course();
-            $course->getTeacher()->setFullName($row["firsname"].' '.$row["lastname"]);
+            $course->getTeacher()->setFullName($row["firstname"].' '.$row["lastname"]);
             $course->getCategorie()->setCatName($row["categorie_name"]);
             $course->setTitle($row["title"]);
             $course->setContent($row["content"]);
             $course->setLaunchDate($row["pub_date"]);
-            $course->setthumbnail($row["image"]);
+            $course->setthumbnail($row["thumbnail"]);
             $course->setType($row["content_type"]);
             $course->setCourseId($row["course_id"]);
             $course->setStatus($row["status"]);
+            $course->setDescription($row["description"]);
 
             array_push($courses,$course);
         }
@@ -76,6 +77,7 @@ class CourseDao implements ICourseDao{
             $course->setType($row["content_type"]);
             $course->setCourseId($row["course_id"]);
             $course->setStatus($row["status"]);
+            $course->setDescription($row["description"]);
 
             array_push($courses,$course);
         }
@@ -90,7 +92,7 @@ class CourseDao implements ICourseDao{
 
 
     private function checkCourseByTitle($title){
-        $stmt = $this->connection->prepare("SELECT * FROM courses WHERE title = :title");
+        $stmt = $this->connection->prepare("SELECT * FROM courses WHERE title = :title; ");
         $stmt->bindParam(":title",$title);
         $stmt->execute();
         $result = $stmt->fetch();
@@ -102,38 +104,51 @@ class CourseDao implements ICourseDao{
 
     public function createCourse(Course $course)
     {
-        try{
-            if($this->checkCourseByTitle($course->getCourseId())){
-                return "course title already exist";
-            }
-            else{
-                $insert = $this->connection->prepare("INSERT INTO courses (users_id,categorie_id,title,content,pub_date,thumbnail,content_type)
-                VALUES(:usersid,:categorieid,:title,:content,:pub_date,:thumbnail,:contenttype)");
-                $insert->bindParam(':userid',$course->getTeacher()->getId());
-                $insert->bindParam(':categorieid',$course->getCategorie()->getCategorieId());
-                $insert->bindParam(':title',$course->getTitle());
-                $insert->bindParam(':content',$course->getContent());
-                $insert->bindParam(':pub_date',$course->getLaunchDate());
-                $insert->bindParam(':thumbnail',$course->getthumbnail());
-                $insert->bindParam(':contenttype',$course->getType());
+        $teacherId = $course->getTeacher()->getId();
+        $catId = $course->getCategorie()->getCategorieId();
+        $title = $course->getTitle();
+        $content = $course->getContent();
+        $date = $course->getLaunchDate();
+        $thumbnail = $course->getThumbnail();
+        $type = $course->getType();
+        $description = $course->getDescription();
 
-                if($insert->execute()){
+        try {
+            if ($this->checkCourseByTitle($title)) {
+                return "course title already exists";
+            } else {
+                
+                $insert = $this->connection->prepare("INSERT INTO courses (user_id , categorie_id , title, content , pub_date , thumbnail , content_type, description)
+                VALUES (:user_id, :categorie_id , :title , :content , :pub_date , :thumbnail , :content_type, :description)");
+
+               
+                $insert->bindParam(":user_id", $teacherId);
+                $insert->bindParam(":categorie_id", $catId);
+                $insert->bindParam(":title", $title);
+                $insert->bindParam(":content", $content);
+                $insert->bindParam(":pub_date", $date);
+                $insert->bindParam(":thumbnail", $thumbnail);
+                $insert->bindParam(":content_type", $type);
+                $insert->bindParam(":description", $description);
+
+                if ($insert->execute()) {
                     return intval($this->connection->lastInsertId());
+                } else {
+                    return "database error";
                 }
-                else return "execution error";
-
-            }      
-
-        }catch(PDOException $e){
-            die("execution error".$e->getMessage());
+            }
+        } catch (PDOException $e) {
+            die("Execution error: " . $e->getMessage());
         }
     }
 
     public function createCourseTags(Course_Tag $courseTag){
-
-        $stmt = $this->connection->prepare("INSERT INTO courses_tags (course_id,tag_id) VALUES(:courseid,:tagid) ");
-        $stmt->bindParam(":courseid",$courseTag->getCourseId());
-        $stmt->bindParam(":tagid",$courseTag->getTagId());
+        $courseId = $courseTag->getCourse()->getCourseId();
+        $tagId = $courseTag->getTag()->gettagId();
+        
+        $stmt = $this->connection->prepare("INSERT INTO courses_tags (course_id,tag_id) VALUES(:courseid, :tagid); ");
+        $stmt->bindParam(":courseid",$courseId);
+        $stmt->bindParam(":tagid",$tagId);
         
         if($stmt->execute()){
             return "success";

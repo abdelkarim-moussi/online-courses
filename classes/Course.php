@@ -14,6 +14,7 @@ class Course{
     private $thumbnail;
     private $type;
     private $status;
+    private $description;
 
 
     public function __construct(){
@@ -65,10 +66,10 @@ class Course{
         return $this;
     }
 
-    public function getthumbnail(){
+    public function getThumbnail(){
         return $this->thumbnail;
     }
-    public function setthumbnail($thumbnail){
+    public function setThumbnail($thumbnail){
         $this->thumbnail = $thumbnail;
         return $this;
     }
@@ -97,6 +98,15 @@ class Course{
 
     public function setStatus($status){
         $this->status = $status;
+        return $this;
+    }
+
+    public function getDescription(){
+        return $this->description;
+    }
+
+    public function setDescription($description){
+        $this->description = $description;
         return $this;
     }
    

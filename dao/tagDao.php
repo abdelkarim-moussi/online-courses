@@ -72,10 +72,10 @@ class TagDao{
         $selectTags->bindParam(":tagname",$tagName);
         $selectTags->execute();
 
-        if($tag = $selectTags->fetch()){
+        if($row = $selectTags->fetch()){
             $tag = new Tag();
-            $tag->setTagName($tag["tag_name"]);
-            $tag->setTagId($tag["tag_id"]);
+            $tag->setTagName($row["tag_name"]);
+            $tag->setTagId($row["tag_id"]);
             return $tag;
         }
         else return "tag not exist";

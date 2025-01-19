@@ -196,6 +196,10 @@ $tagDao = new TagDao();
                     <input type="text" name="title" id="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50" placeholder="course title">
                 </div>
                 <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="description" rows="2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50"></textarea>
+                </div>
+                <div>
                 <label for="course-content" class="block text-sm font-medium text-gray-700">course-content type(video or document)</label>
                     <select name="course-content" id="course-content" onchange="updateContent()" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
                         <option value="" selected disabled>choose type</option>

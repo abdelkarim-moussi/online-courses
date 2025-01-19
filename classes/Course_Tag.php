@@ -1,27 +1,28 @@
 <?php
-
+include_once "../classes/Course.php";
+include_once "../classes/Tag.php";
 class Course_Tag{
 
-    private $courseId;
-    private $tagId;
+    private Course $course;
+    private Tag $tag;
 
     public function __construct(){
 
     }
 
 
-    public function getCourseId(){
-        return $this->courseId;
+    public function getCourse(){
+        return $this->course;
     }
-    public function setCourseId($courseId){
-        $this->courseId = $courseId;
+    public function setCourse(Course $course){
+        $this->course = $course;
         return $this;
     }
-    public function getTagId(){
-        return $this->tagId;
+    public function getTag(){
+        return $this->tag;
     }
-    public function setTagId($tagId){
-        $this->tagId = $tagId;
+    public function setTag(Tag $tag){
+        $this->tag = $tag;
         return $this;
     }
 }
