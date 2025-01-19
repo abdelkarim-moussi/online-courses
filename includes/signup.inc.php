@@ -1,5 +1,6 @@
 <?php
 include_once "../classes/User.php";
+include_once "../dao/UserDao.php";
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     
@@ -26,6 +27,17 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         exit();
     }
     
-    User::createAccount($firstname, $lastname, $email, $role, $photo, $password);
-  
+    $user = new User();
+    $user->setEmail($email);
+    $user->setFirstName($firstname);
+    $user->setLastName($lastname);
+    $user->setRole($role);
+    $user->setPassword($password);
+    $user->setphoto($photo);
+
+    $userDao= new UserDao();
+    $userDao->createAccount($user);
+
+    header("Location: ../public/index.php");
+
 }

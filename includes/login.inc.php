@@ -1,6 +1,6 @@
 <?php
 include_once "../classes/User.php";
-include_once "../classes/Student.php";
+include_once "../dao/UserDao.php";
 
 if(isset($_POST['login'])){
 
@@ -14,7 +14,12 @@ if(isset($_POST['login'])){
             exit();
         }
         
-        User::login($email,$password);
+        $user = new User();
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $userDao = new UserDao();
+        $userDao->login($user);
+    
         header("Location: ../public/index.php");
     }
 }

@@ -1,33 +1,44 @@
 <?php
 include_once "../config/DataBase.php";
+include_once "../classes/Categorie.php";
+include_once "../classes/Teacher.php";
+
 class Course{
-    private $teacherId;
-    private $categorieId;
+    
+    private $courseId;
+    private Teacher $teacher;
+    private Categorie $categorie;
     private $title;
     private $content;
     private $launchDate;
-    private $cover;
+    private $thumbnail;
+    private $type;
+    private $status;
 
 
-    public function __construct($teacherId,$categorieId,$title,$content,$launchDate,$cover){
+    public function __construct(){
         
-        $this->teacherId = $teacherId;
-        $this->categorieId = $categorieId;
-        $this->title = $title;
-        $this->content = $content;
-        $this->launchDate = $launchDate;
-        $this->cover = $cover;
+        $this->teacher = new Teacher();
+        $this->categorie = new Categorie();
 
     }
 
 //getters and setters
 
-    public function getTeacherId(){
-        return $this->teacherId;
+    public function getTeacher(){
+        return $this->teacher;
+    }
+    public function setTeacher(Teacher $teacher){
+        $this->teacher = $teacher;
+        return $this;
     }
 
-    public function getCategoriId(){
-        return $this->categorieId;
+    public function getCategorie(){
+        return $this->categorie;
+    }
+    public function setCategorie(Categorie $categorie){
+        $this->categorie = $categorie;
+        return $this;
     }
 
     public function getTitle(){
@@ -35,6 +46,7 @@ class Course{
     }
     public function setTitle($title){
         $this->title = $title;
+        return $this;
     }
 
     public function getContent(){
@@ -42,6 +54,7 @@ class Course{
     }
     public function setContent($content){
         $this->content = $content;
+        return $this;
     }
 
     public function getLaunchDate(){
@@ -49,14 +62,44 @@ class Course{
     }
     public function setLaunchDate($launchDate){
         $this->launchDate = $launchDate;
+        return $this;
     }
 
-    public function getCover(){
-        return $this->cover;
+    public function getthumbnail(){
+        return $this->thumbnail;
     }
-    public function setCover($cover){
-        $this->cover = $cover;
+    public function setthumbnail($thumbnail){
+        $this->thumbnail = $thumbnail;
+        return $this;
     }
+
+    public function getType(){
+        return $this->type;
+    }
+
+    public function setType($type){
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getCourseId(){
+        return $this->courseId;
+    }
+
+    public function setCourseId($id){
+        $this->courseId = $id;
+        return $this;
+    }
+
+    public function getStatus(){
+        return $this->status;
+    }
+
+    public function setStatus($status){
+        $this->status = $status;
+        return $this;
+    }
+   
 
 
     public static function changeCourseStatus($status,$courseId){
@@ -76,16 +119,8 @@ class Course{
         $deleteCourse->execute([$courseId]);
     }
 
-    public static function getCoursesByTeacherId($teacherId){
+   
 
-        $db = DataBase::getInstance();
-        $conn = $db->getConnection();
 
-        $selectCourses = $conn->prepare("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id
-        WHERE courses.user_id = ?");
-        $selectCourses->execute([$teacherId]);
-        return $result = $selectCourses->fetchAll();
-        
-    }
    
 }

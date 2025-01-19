@@ -1,10 +1,15 @@
 <?php
 session_start();
-include_once "../classes/Admin.php";
-include_once "../classes/Tag.php";
+include_once "../dao/CategorieDao.php";
+include_once "../dao/UserDao.php";
+include_once "../dao/CourseDao.php";
+include_once "../dao/tagDao.php";
 
-$admin = new Admin("", "", "", "", "", "");
-$tag = new Tag("");
+$userDao = new UserDao();
+$catDao = new CategorieDao();
+$courseDao = new CourseDao;
+$tagDao = new TagDao();
+
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +58,7 @@ $tag = new Tag("");
     </section>
 
     <!-- Main Content -->
-    <main class="flex-1 bg-white rounded-xl shadow-lg p-6 ml-72 overflow-y-auto h-screen">
+    <main class="flex-1 bg-white rounded-xl shadow-lg ml-72 overflow-y-auto h-screen">
         <!-- Categories Section -->
         <section class="w-full section text-[#111C2D] bg-white sec1 relative" id="categories">
             <div class="border-b pb-2 flex justify-between items-center mb-5">
@@ -69,16 +74,18 @@ $tag = new Tag("");
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($admin->showCategories() as $categorie) { ?>
+                    <?php 
+                
+                    foreach ($catDao->showCategories() as $categorie) { ?>
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="px-4 py-3"><?php echo $categorie["categorie_id"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $categorie["categorie_name"]; ?></td>
-                            <td class="px-4 py-3"><?php foreach ($admin->showCoursesNumByCat() as $numCourses) {
+                            <td class="px-4 py-3"><?php echo $categorie->getCategorieId() ;?></td>
+                            <td class="px-4 py-3"><?php echo $categorie->getCatName(); ?></td>
+                            <td class="px-4 py-3"><?php $numCourses = $catDao->showCoursesNumByCat();
                                                         echo $numCourses["num"];
-                                                    } ?></td>
+                                                    ?></td>
                             <td class="px-4 py-3 flex gap-3">
-                                <a href="javascript:void(0);" onclick="openModal('<?php echo $categorie['categorie_id']; ?>', '<?php echo $categorie['categorie_name']; ?>', '<?php echo $categorie['categorie_description']; ?>')" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Update</a>
-                                <a href="../includes/categorie.inc.php?idcat=<?php echo $categorie['categorie_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                                <a href="javascript:void(0);" onclick="openModal('<?php echo $categorie->getCategorieId(); ?>', '<?php echo $categorie->getCatName(); ?>', '<?php echo $categorie->getDescription(); ?>')" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Update</a>
+                                <a href="../includes/categorie.inc.php?idcat=<?php echo $categorie->getCategorieId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
                             </td>
                         </tr>
                     <?php } ?>
@@ -117,18 +124,18 @@ $tag = new Tag("");
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($admin->showUsersByRole("teacher") as $user) { ?>
+                    <?php foreach ($userDao->showUsersByRole("teacher") as $user) { ?>
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="px-4 py-3"><?php echo $user["user_id"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $user["firstname"] . " " . $user["lastname"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $user["email"]; ?></td>
-                            <td class="px-4 py-3"><?php $coursesNum = $admin->calcCoursesForUser($user["user_id"]);
+                            <td class="px-4 py-3"><?php echo $user->getId(); ?></td>
+                            <td class="px-4 py-3"><?php echo $user->getFullName(); ?></td>
+                            <td class="px-4 py-3"><?php echo $user->getEmail(); ?></td>
+                            <td class="px-4 py-3"><?php $coursesNum = $userDao->calcCoursesForUser($user->getId());
                                                     echo $coursesNum["numcourses"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $user["user_status"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user->getStatus(); ?></td>
                             <td class="px-4 py-3 flex gap-3">
-                                <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Activate</a>
-                                <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Suspend</a>
-                                <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                                <a href="../includes/user.inc.php?action=activate?<?php echo $user->getId(); ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Activate</a>
+                                <a href="../includes/user.inc.php?action=suspend?<?php echo $user->getId(); ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Suspend</a>
+                                <a href="../includes/user.inc.php?action=delete?<?php echo $user->getId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
                             </td>
                         </tr>
                     <?php } ?>
@@ -150,16 +157,16 @@ $tag = new Tag("");
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($admin->showUsersByRole("student") as $user) { ?>
+                    <?php foreach ($userDao->showUsersByRole("student") as $user) { ?>
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="px-4 py-3"><?php echo $user["user_id"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $user["firstname"] . " " . $user["lastname"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $user["email"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $user["user_status"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $user->getId(); ?></td>
+                            <td class="px-4 py-3"><?php echo $user->getFullName(); ?></td>
+                            <td class="px-4 py-3"><?php echo $user->getEmail(); ?></td>
+                            <td class="px-4 py-3"><?php echo $user->getStatus(); ?></td>
                             <td class="px-4 py-3 flex gap-3">
-                                <a href="../includes/user.inc.php?action=activate?<?php echo $user['user_id']; ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Activate</a>
-                                <a href="../includes/user.inc.php?action=suspend?<?php echo $user['user_id']; ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Suspend</a>
-                                <a href="../includes/user.inc.php?action=delete?<?php echo $user['user_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                                <a href="../includes/user.inc.php?action=activate?<?php echo $user->getId(); ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Activate</a>
+                                <a href="../includes/user.inc.php?action=suspend?<?php echo $user->getId(); ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Suspend</a>
+                                <a href="../includes/user.inc.php?action=delete?<?php echo $user->getId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
                             </td>
                         </tr>
                     <?php } ?>
@@ -175,7 +182,7 @@ $tag = new Tag("");
                         <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-book text-blue-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"><?php $row = $admin->getNumCourses();
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->getNumCourses();
                                                         echo $row['num']; ?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">All Courses</h3>
@@ -185,7 +192,7 @@ $tag = new Tag("");
                         <div class="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-check text-green-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"><?php $row = $admin->getCoursesByStatus("accepted");
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->getCoursesByStatus("accepted");
                                                         echo $row['num']; ?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">Accepted Courses</h3>
@@ -195,7 +202,7 @@ $tag = new Tag("");
                         <div class="bg-orange-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-clock text-orange-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"><?php $row = $admin->getCoursesByStatus("pending");
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->getCoursesByStatus("pending");
                                                         echo $row['num']; ?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">Pending Courses</h3>
@@ -205,14 +212,14 @@ $tag = new Tag("");
                         <div class="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-times text-red-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"><?php $row = $admin->getCoursesByStatus("refused");
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->getCoursesByStatus("refused");
                                                         echo $row['num']; ?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">Refused Courses</h3>
                 </div>
             </div>
             <h1 class="text-lg mb-5 border-b pb-5 capitalize">disponible courses</h1>
-            <p class="border-b pb-2 text-orange-400"><?php $row = $admin->getCoursesByStatus("pending");
+            <p class="border-b pb-2 text-orange-400"><?php $row = $courseDao->getCoursesByStatus("pending");
                                                         if ($row['num'] == 0) {
                                                             echo "Oops! there is no courses";
                                                         } ?>
@@ -228,20 +235,21 @@ $tag = new Tag("");
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($admin->showCourses() as $result) { ?>
+                    <?php foreach ($courseDao->showCourses() as $course) { ?>
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="px-4 py-3"><?php echo $result["course_id"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $result["title"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $result["firstname"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $course->getCourseId(); ?></td>
+                            <td class="px-4 py-3"><?php echo $course->getTitle(); ?></td>
+                            <td class="px-4 py-3"><?php echo $course->getTeacher()->getFullName(); ?></td>
                             <td class="px-4 py-3">
-                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm"><?php echo $result["status"]; ?></span>
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm"><?php echo $course->getStatus(); ?></span>
                             </td>
+
                             <td class="px-4 py-3 flex gap-3">
                                 <?php if ($result['status'] === 'pending') { ?>
-                                    <a href="../includes/course.inc.php?action=accept?<?php echo $result['course_id']; ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Accept</a>
-                                    <a href="../includes/course.inc.php?action=refuse?<?php echo $result['course_id']; ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Refuse</a>
+                                    <a href="../includes/course.inc.php?action=accept?<?php echo $course->getCourseId(); ?>" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm">Accept</a>
+                                    <a href="../includes/course.inc.php?action=refuse?<?php echo $course->getCourseId(); ?>" class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-md text-sm">Refuse</a>
                                 <?php } else { ?>
-                                    <a href="../includes/course.inc.php?action=cancel?<?php echo $result['course_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Cancel</a>
+                                    <a href="../includes/course.inc.php?action=cancel?<?php echo $course->getCourseId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Cancel</a>
                                 <?php } ?>
                             </td>
                         </tr>
@@ -252,8 +260,8 @@ $tag = new Tag("");
 
         <!-- Tags Section -->
         <section class="w-full section text-[#111C2D] bg-white sec8 relative" id="tags">
-            <div class="border-b pb-5 flex justify-between items-center">
-                <h1 class="text-lg mb-5 capitalize">Disponible Tags</h1>
+            <div class="border-b pb-5 mb-5 flex justify-between items-center">
+                <h1 class="text-lg capitalize">Disponible Tags</h1>
                 <button id="addnewcat" onclick="openTagModal()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add New Tag</button>
             </div>
             <table class="w-full rounded-lg text-sm">
@@ -264,14 +272,15 @@ $tag = new Tag("");
                         <th class="font-normal">actions</th>
                     </tr>
                 </thead>
+                
                 <tbody>
-                    <?php $tags = $tag->getTags();
-                    foreach ($tags as $row) { ?>
+                    <?php $tags = $tagDao->getTags();
+                    foreach ($tags as $tag) { ?>
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="px-4 py-3"><?php echo $row["tag_id"]; ?></td>
-                            <td class="px-4 py-3"><?php echo $row["tag_name"]; ?></td>
+                            <td class="px-4 py-3"><?php echo $tag->getTagId(); ?></td>
+                            <td class="px-4 py-3"><?php echo $tag->getTagName(); ?></td>
                             <td class="px-4 py-3">
-                                <a href="../includes/tag.in.php?idtag=<?php echo $row['tag_id']; ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
+                                <a href="../includes/tag.in.php?idtag=<?php echo $tag->getTagId(); ?>" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">Delete</a>
                             </td>
                         </tr>
                     <?php } ?>

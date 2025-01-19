@@ -4,7 +4,9 @@ session_start();
 include_once "../classes/Teacher.php";
 include_once "../classes/Admin.php";
 include_once "../classes/User.php";
-include_once "../classes/Course.php";
+include_once "../dao/CourseDao.php";
+include_once "../dao/tagDao.php";
+include_once "../dao/CategorieDao.php";
 
 // if(isset($_SESSION['userId'])){
 //     if($_SESSION['urole'] === "admin"){
@@ -18,6 +20,9 @@ include_once "../classes/Course.php";
 // }
 // else header("Location: login.php");
 
+$courseDao = new CourseDao();
+$categorieDao = new CategorieDao();
+$tagDao = new TagDao();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +50,9 @@ include_once "../classes/Course.php";
                 <ul class="pl-2 flex flex-col gap-y-6">
                     <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
                         <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold active-btn" data-id="courses"><i class="fa-solid fa-book"></i>Courses</a>
+                    </li>
+                    <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                        <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="enrollments"><i class="fa-solid fa-bookmark"></i>Enrollments</a>
                     </li>
                     <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
                         <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="add-course"><i class="fa-solid fa-add"></i>Add Course</a>
@@ -120,24 +128,23 @@ include_once "../classes/Course.php";
             
          <?php 
             $teacherId = $_SESSION["userId"];
-            $course = Course::getCoursesByTeacherId($teacherId);
-            foreach($course as $row ){
-         ?>
+            foreach($courseDao->getCoursesByUserId($teacherId) as $row ){
+            ?>
             <tr>
               <td class="font-normal">
-                <?php echo $row["course_id"];?>
+                <?php echo $row->getCourseId();?>
               </td>
               <td class="font-normal">
-              <?php echo $row["title"];?>
+              <?php echo $row->getTitle();?>
               </td>
               <td class="font-normal">
-              <?php echo $row["firstname"]." ".$row["lastname"];?>
+              <?php echo $row->getFullName();?>
               </td>
               <td class="font-normal">
-                  <p class="bg-blue-50 rounded-md"><?php echo $row["status"];?></p>
+                  <p class="bg-blue-50 rounded-md"><?php echo $row->getStatus();?></p>
               </td>
               <td class="font-normal flex justify-center gap-3">
-                <a href="javascript:void(0);" onclick="openUpCourseModal('<?php echo $course['course_id']; ?>','<?php echo $course['title']; ?>','<?php echo $course['content']; ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
+                <a href="javascript:void(0);" onclick="openUpCourseModal('<?php echo $row->getCourseId(); ?>','<?php echo $row->getTitle(); ?>','<?php echo $row->getContent(); ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
                 <a href="../includes/course.inc.php?action=delete?<?php echo $course['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
               </td>
             </tr>
@@ -161,7 +168,7 @@ include_once "../classes/Course.php";
                       <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                  </div>
                  <div>
-                    <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">content</label>
+                    <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">course-content</label>
                     <textarea name="content" id="content" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                  </div>
                  <div>
@@ -183,33 +190,60 @@ include_once "../classes/Course.php";
 <!-- Add Course section -->
 <section class="w-full section text-[#111C2D] bg-white rounded-lg shadow-md sec7" id="add-course">
     <h1 class="text-lg mb-5 border-b pb-5 capitalize">Add new course</h1>
-    <form class="space-y-4 md:space-y-6" action="../includes/article.inc.php" method="POST" id="signup-form" enctype="multipart/form-data">
-                 <div>
-                      <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                      <input type="text" name="title" id="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50" placeholder="course title">
-                  </div>
-                 <div>
-                    <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                    <textarea name="content" id="content"  class="h-[200px] mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50" placeholder="course content..."></textarea>
-                    <div class="error text-sm text-red-600"></div>
+    <form class="space-y-4 md:space-y-6" action="../includes/course.inc.php" method="POST" id="signup-form" enctype="multipart/form-data">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                    <input type="text" name="title" id="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50" placeholder="course title">
                 </div>
-                 <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">image</label>
-                    <input type="file" name="image" id="image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
-                    <div class="error text-sm text-red-600"></div>
+                <div>
+                <label for="course-content" class="block text-sm font-medium text-gray-700">course-content type(video or document)</label>
+                    <select name="course-content" id="course-content" onchange="updateContent()" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                        <option value="" selected disabled>choose type</option>
+                        <option value="video">video</option>
+                        <option value="document">document</option>
+                    </select>
+                </div>
+                <div class="hidden" id="video-container">
+                    <label for="video" class="block text-sm font-medium text-gray-700">upload video</label>
+                    <input type="file" name="video" id="video" accept="video/*" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                </div>
+                <div class="hidden" id="document-container">
+                    <label for="document" class="block text-sm font-medium text-gray-700">upload document</label>
+                    <input type="file" name="document" id="document" accept=".pdf,.docx,.ppt" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                </div>
+                <div>
+                    <label for="thumbnail" class="block text-sm font-medium text-gray-700">course thumbnail</label>
+                    <input type="file" name="thumbnail" id="thumbnail" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
                 </div>
             
                 <div>
                       <label for="categorie" class="block text-sm font-medium text-gray-700">Categorie</label>
                       <select name="categorie" id="categorie" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
-                    
-                      <option value=""></option>
-                      
-
+                      <?php foreach($categorieDao->showCategories() as $cat){ ?>
+                      <option value="<?php echo $cat->getCatName(); ?>"><?php echo $cat->getCatName(); ?></option>
+                      <?php } ?>
                       </select>
-                  </div>
+                </div>
+                <div>
+                    <label for="tags" class="block my-4 text-sm font-medium text-gray-900">
+                        Tags
+                    </label>
+                    <div class="mt-1 flex gap-5 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                        <?php
+                        $tags = $tagDao->getTags();
+                         foreach($tags as $tag) {?>
+                        <div class="flex items-center mb-2">
+                            <input type="checkbox" name="tags[]" value="<?php echo $tag->getTagName(); ?>" 
+                                class="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2">
+                            <label for="tags" class="ml-2 text-sm font-medium text-gray-900">
+                                <?php echo $tag->getTagName(); ?>
+                            </label>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
                 
-                  <button type="submit" name="add-course" id="add-course" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add Course</button>
+                <button type="submit" name="add-course" id="add-course" class="w-full uppercase tracking-wide text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add Course</button>
         
             </form>
     </section>
@@ -267,6 +301,9 @@ include_once "../classes/Course.php";
     </div>
 </section>
 
+<section id="enrollments" class="w-full section text-[#111C2D] bg-white rounded-lg shadow-md sec9">
+</section>
+
   </main>
 
 <script>
@@ -310,6 +347,21 @@ function closeInfoModal(){
   profileModal.classList.add("hidden");
 
 }
+
+const cont = document.getElementById("course-content");
+console.log(cont);
+function updateContent(){
+    console.log(cont.value);
+   if(cont.value === "video"){
+      document.getElementById("video-container").classList.remove("hidden");
+      document.getElementById("document-container").classList.add("hidden");
+   }
+   else if(cont.value === "document"){
+    document.getElementById("video-container").classList.add("hidden");
+    document.getElementById("document-container").classList.remove("hidden");
+   }
+}
+
 </script>
 
 

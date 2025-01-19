@@ -36,7 +36,6 @@ function sectionSwitch(){
 
         let element = document.getElementById(id);
         element.classList.add("active");
-        console.log(element);
         
       }
    })
@@ -44,7 +43,5 @@ function sectionSwitch(){
 
 }
 sectionSwitch();
-
-
 
 
