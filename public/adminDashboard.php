@@ -6,17 +6,20 @@ include_once "../dao/UserDao.php";
 include_once "../dao/CourseDao.php";
 include_once "../dao/tagDao.php";
 
-if(isset($_SESSION["userId"])){
 
-    if($_SESSION["role"] === "teacher"){
-        header("Location: teacherDashboard.php");
-    }
-    else if($_SESSION["role"] === "student"){
-        header("Location: index.php");
-    }
-    
+if(!isset($_SESSION["urole"])){
+    header("Location:login.php");
 }
-// else header("Location: login.php");
+if($_SESSION["urole"] === "teacher"){
+    header("Location:teacherDashboard.php");
+}
+elseif($_SESSION["urole"] === "admin"){
+    header("Location:adminDashboard.php.php");
+}
+
+else if($_SESSION["urole"] === "student"){
+header("Location: index.php");
+}
 
 
 $userDao = new UserDao();
@@ -235,7 +238,7 @@ $tagDao = new TagDao();
             <h1 class="text-lg mb-5 border-b pb-5 capitalize">disponible courses</h1>
             <p class="border-b pb-2 text-orange-400"><?php $row = $courseDao->getCoursesByStatus("pending");
                                                         if ($row['num'] == 0) {
-                                                            echo "Oops! there is no courses";
+                                                            echo "there is no pending courses";
                                                         } ?>
             </p>
             <table class="w-full rounded-lg text-sm">

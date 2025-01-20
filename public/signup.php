@@ -1,16 +1,18 @@
 <?php
 session_start();
-// if(session_id()){
+
+if(session_id()){
     
-//     if(isset($_SESSION['userId'])){
-//         if($_SESSION['urole'] === "author"){
-//             header("Location: authorDash.php");
-//         }
-//         elseif($_SESSION['urole'] === "visitor"){
-//             header("Location: index.php");
-//         }
-//     }
-// }
+    // if(isset($_SESSION['userId'])){
+    //     if($_SESSION['urole'] === "admin"){
+    //         header("Location: adminDashboard.php");
+    //     }
+    //     elseif($_SESSION['urole'] === "teacher"){
+    //         header("Location: teacherDashboard.php");
+    //     }
+    // }
+    // else  header("Location: index.php");
+}
 
 
 ?>
@@ -38,7 +40,6 @@ session_start();
             </div>
             <div class="hidden md:flex space-x-4 text-sm">
                 <a href="login.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</a>
-                <a href="#" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
             </div>
             <button class="md:hidden text-gray-600">
                 <i class="fas fa-bars text-2xl"></i>

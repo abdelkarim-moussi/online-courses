@@ -41,6 +41,84 @@ class CourseDao implements ICourseDao{
 
     }
 
+    public function showPopulcarCourses(){
+
+        $selectCoureses = $this->connection->query("SELECT * FROM courses 
+        INNER JOIN users ON courses.user_id = users.user_id INNER JOIN categories 
+        ON courses.categorie_id = categories.categorie_id WHERE status = 'accepted' ORDER BY courses.course_id DESC LIMIT 3");
+        $selectCoureses->execute();
+        $courses = [];
+
+        while($row = $selectCoureses->fetch()){
+
+            $course = new Course();
+            $course->getTeacher()->setFullName($row["firstname"].' '.$row["lastname"]);
+            $course->getCategorie()->setCatName($row["categorie_name"]);
+            $course->setTitle($row["title"]);
+            $course->setContent($row["content"]);
+            $course->setLaunchDate($row["pub_date"]);
+            $course->setthumbnail($row["thumbnail"]);
+            $course->setType($row["content_type"]);
+            $course->setCourseId($row["course_id"]);
+            $course->setStatus($row["status"]);
+            $course->setDescription($row["description"]);
+
+            array_push($courses,$course);
+        }
+        return $courses;
+
+    }
+
+    public function getPages(){
+
+        $rows_per_page = 3;
+
+        $records = $this->connection->query("SELECT * FROM courses");
+        $num_rows = $records->rowCount();
+
+        return $pages = ceil($num_rows / $rows_per_page);
+    }
+
+    public function showCoursesByStatus($status,$start){
+
+        $rows_per_page = 3;
+
+        //number of pages
+
+        $records = $this->connection->query("SELECT * FROM courses");
+        $num_rows = $records->rowCount();
+
+        if(isset($_GET["page-nb"])){
+            $page = $_GET["page-nb"] - 1;
+            $start = $page * $rows_per_page;
+        }
+
+        $selectCoureses = $this->connection->prepare("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id INNER JOIN categories ON courses.categorie_id = categories.categorie_id
+        WHERE courses.status = :status LIMIT $start, $rows_per_page");
+        $selectCoureses->bindParam(":status",$status);
+        $selectCoureses->execute();
+        $courses = [];
+
+        while($row = $selectCoureses->fetch()){
+
+            $course = new Course();
+            $course->getTeacher()->setFullName($row["firstname"].' '.$row["lastname"]);
+            $course->getCategorie()->setCatName($row["categorie_name"]);
+            $course->setTitle($row["title"]);
+            $course->setContent($row["content"]);
+            $course->setLaunchDate($row["pub_date"]);
+            $course->setthumbnail($row["thumbnail"]);
+            $course->setType($row["content_type"]);
+            $course->setCourseId($row["course_id"]);
+            $course->setStatus($row["status"]);
+            $course->setDescription($row["description"]);
+
+            array_push($courses,$course);
+        }
+        return $courses;
+
+    }
+
     public function getNumCourses(){
 
         $numCourses = $this->connection->prepare("SELECT count(*) AS num FROM courses");
@@ -63,11 +141,12 @@ class CourseDao implements ICourseDao{
 
         try{
             $selectCourses = $this->connection->prepare("SELECT * FROM courses INNER JOIN users ON courses.user_id = users.user_id
+            INNER JOIN categories ON courses.categorie_id = categories.categorie_id
             WHERE courses.user_id = ?");
             $selectCourses->execute([$userId]);
             $courses = [];
         
-        while($row = $selectCourses->fetchAll()){
+        while($row = $selectCourses->fetch()){
 
             $course = new Course();
             $course->getTeacher()->setFullName($row["firstname"].' '.$row["lastname"]);
@@ -217,5 +296,36 @@ class CourseDao implements ICourseDao{
         $deleteCourse = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
         $deleteCourse->execute([$courseId]);
     }
+
+    public function getEnrollements($teacherId){
+
+        try{
+            $selectCourses = $this->connection->prepare("SELECT  users.*, courses.title AS course_title
+                FROM users
+                INNER JOIN users_courses ON users.user_id = users_courses.user_id
+                INNER JOIN courses ON users_courses.course_id = courses.course_id
+                WHERE courses.user_id = ?");
+            $selectCourses->execute([$teacherId]);
+            $rows = $selectCourses->rowCount();
+            return $rows;
+
+        }catch(PDOException $e){
+        die("execution error".$e->getMessage());
+    }
+
+
+    }
+
+
+    public function showNumCoursesByStatByTeacher($status){
+
+        $techerId = $_SESSION["userId"];
+        $slect =$this->connection->prepare("SELECT COUNT(*) as numc FROM courses JOIN users WHERE courses.user_id = users.user_id AND courses.user_id = ? AND courses.status = ?");
+        $slect->execute([$techerId,$status]);
+        $numrows = $slect->fetch();
+        return $numrows;
+
+    }
+
 }
 

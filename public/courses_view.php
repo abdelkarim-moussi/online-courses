@@ -1,6 +1,15 @@
 <?php 
+session_start();
 include_once "../dao/CourseDao.php";
 include_once "../dao/CategorieDao.php";
+include_once "../classes/User.php";
+include_once "../dao/UserDao.php";
+
+$user = new User();
+$user->setId($_SESSION["userId"]);
+$user->setRole($_SESSION["urole"]);
+$userId = $user->getId();
+$userRole = $user->getRole();
 
 $courseDao = new CourseDao();
 $catDao = new CategorieDao();
@@ -17,18 +26,25 @@ $catDao = new CategorieDao();
 <body class="bg-gray-50">
     <header class="fixed w-full bg-white shadow-sm z-50">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-blue-600">EduOnline</div>
-            <div class="hidden md:flex space-x-8">
+            <div class="text-xl font-bold text-blue-600">EduOnline</div>
+            <div class="hidden md:flex space-x-8 text-sm">
                 <a href="index.php" class="text-gray-600 hover:text-blue-600">Home</a>
                 <a href="courses_view.php" class="text-blue-600">Courses</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Categories</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
             </div>
-            <div class="hidden md:flex space-x-4">
-                <button class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</button>
+            <div class="hidden md:flex space-x-4 text-sm">
+                <?php if(isset($userId) && $userRole === "student"){ ?>
+                    <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a>
+                    <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">logout</i></a>
+                    <a href="my-courses.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">my courses</i></a>
+                <?php } else{ ?>
+                    <a href="login.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</a>
+                    <a href="signup.php" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
+                <?php } ?>
             </div>
+
             <button class="md:hidden text-gray-600">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
@@ -36,7 +52,7 @@ $catDao = new CategorieDao();
     </header>
 
     <main class="pt-20">
-        <section class="bg-gradient-to-r from-blue-600 to-blue-800 py-12">
+        <section class="bg-gradient-to-r py-12" style="background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.75)),url(../src/assets/imgs/bg1.jpg);background-size:cover;">
             <div class="container mx-auto px-4 text-center text-white">
                 <h1 class="text-4xl font-bold mb-4">Browse Our Courses</h1>
                 <p class="text-xl">Discover the perfect course to advance your skills</p>
@@ -60,14 +76,11 @@ $catDao = new CategorieDao();
                         </div>
                     </div>
 
-
-                    <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                        Apply Filters
-                    </button>
                 </aside>
 
                 <!-- Main Content -->
                 <div class="flex-1">
+                    <?php $pages = $courseDao->getPages(); ?>
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                         <div class="w-full md:w-96">
                             <div class="relative">
@@ -75,16 +88,12 @@ $catDao = new CategorieDao();
                                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                             </div>
                         </div>
-                        <select class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                            <option>Most Popular</option>
-                            <option>Newest</option>
-                            <option>Highest Rated</option>
-                        </select>
+
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Course Cards -->
-                         <?php foreach($courseDao->showCourses() as $course){ ?>
+                         <?php foreach($courseDao->showCoursesByStatus("accepted",0) as $course){ ?>
                         <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                             <img src="../uploads/<?=$course->getThumbnail()?>" alt="Course" class="w-full h-48 object-cover">
                             <div class="p-6">
@@ -101,17 +110,11 @@ $catDao = new CategorieDao();
 
                     <!-- Pagination -->
                     <div class="flex justify-center items-center space-x-2 mt-8">
-                        <button class="px-3 py-2 rounded-lg border hover:bg-gray-50">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="px-4 py-2 rounded-lg border bg-blue-600 text-white">1</button>
-                        <button class="px-4 py-2 rounded-lg border hover:bg-gray-50">2</button>
-                        <button class="px-4 py-2 rounded-lg border hover:bg-gray-50">3</button>
-                        <span class="px-4 py-2">...</span>
-                        <button class="px-4 py-2 rounded-lg border hover:bg-gray-50">10</button>
-                        <button class="px-3 py-2 rounded-lg border hover:bg-gray-50">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
+                    <?php 
+                            for($c = 1 ; $c <= $pages; $c++){
+                            ?>
+                            <a href="?page-nb=<?php echo $c; ?>" class="border hover:bg-blue-500 hover:text-white px-3 text-lg"><?php echo $c; ?></a>
+                            <?php  } ?>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,20 @@
+<?php
+session_start();
+include_once "../dao/CourseDao.php";
+
+if(isset($_SESSION["userId"])){
+    $user_id = $_SESSION["userId"];
+}
+
+$user = new User();
+$user->setId($_SESSION["userId"]);
+$user->setRole($_SESSION["urole"]);
+$userId = $user->getId();
+$userRole = $user->getRole();
+$courseDao = new CourseDao();
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,18 +27,28 @@
 <body class="bg-gray-50">
     <header class="fixed w-full bg-white shadow-sm z-50">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-blue-600">EduHub</div>
-            <div class="hidden md:flex space-x-8">
+            <div class="text-xl font-bold text-blue-600">EduHub</div>
+            <div class="hidden md:flex space-x-8 text-sm">
                 <a href="#" class="text-blue-600">Home</a>
                 <a href="courses_view.php" class="text-gray-600 hover:text-blue-600">Courses</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Categories</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
+                
             </div>
-            <div class="hidden md:flex space-x-4">
-                <button class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</button>
+            <div class="hidden md:flex space-x-4 text-sm">
+                <?php if(isset($userId) && $userRole === "student"){ ?>
+                    <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a>
+                    <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">logout</i></a>
+                    <a href="MyCourses.php?id=<?=$user_id?>" class="px-4 py-2 text-blue-600 hover:text-blue-700" id="my-courses">
+                        my courses
+                    </a>
+                <?php } else{ ?>
+                    <a href="login.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</a>
+                    <a href="signup.php" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
+                <?php } ?>
             </div>
+            
             <button class="md:hidden text-gray-600">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
@@ -29,7 +56,7 @@
     </header>
 
     <main>
-        <section class="pt-24 pb-16 bg-gradient-to-r from-blue-600 to-blue-800">
+        <section class="pt-24 pb-16" style="background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.75)),url(../src/assets/imgs/bg.jpg);background-size:cover;">
             <div class="container mx-auto px-4 text-center text-white">
                 <h1 class="text-4xl md:text-5xl font-bold mb-6">Unlock Your Potential with Online Learning</h1>
                 <p class="text-xl mb-8">Access thousands of courses from expert instructors worldwide</p>
@@ -71,65 +98,23 @@
             <div class="container mx-auto px-4">
                 <h2 class="text-3xl font-bold text-center mb-12">Popular Courses</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <?php $popCourses = $courseDao->showPopulcarCourses();
+                    foreach($popCourses as $course){?>
                     <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                        <img src="https://via.placeholder.com/300x200" alt="Web Development" class="w-full h-48 object-cover">
+                        <img src="../uploads/<?=$course->getThumbnail();?>" alt="<?=$course->getTitle()?>" class="w-full h-48 object-cover">
                         <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">Web Development Bootcamp</h3>
-                            <p class="text-gray-600 mb-2">By John Smith</p>
-                            <div class="flex items-center mb-2">
-                                <div class="text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="ml-2 text-gray-600">4.5 (2.3k reviews)</span>
-                            </div>
-                            <p class="text-xl font-bold text-blue-600">$89.99</p>
+                            <a href="course-details.php?id=<?=$course->getCourseId()?>"><h3 class="text-xl font-semibold mb-2"><?=$course->getTitle();?></h3></a>
+                            <p class="text-gray-600 mb-2">By <?=$course->getTeacher()->getFullName();?></p>
+                            
+                            <p class="text-xl font-bold text-blue-600"><?=$course->getCategorie()->getCatName();?></p>
                         </div>
                     </div>
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                        <img src="https://via.placeholder.com/300x200" alt="Data Science" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">Data Science Fundamentals</h3>
-                            <p class="text-gray-600 mb-2">By Sarah Johnson</p>
-                            <div class="flex items-center mb-2">
-                                <div class="text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="ml-2 text-gray-600">5.0 (1.8k reviews)</span>
-                            </div>
-                            <p class="text-xl font-bold text-blue-600">$94.99</p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                        <img src="https://via.placeholder.com/300x200" alt="Digital Marketing" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">Digital Marketing Mastery</h3>
-                            <p class="text-gray-600 mb-2">By Mike Wilson</p>
-                            <div class="flex items-center mb-2">
-                                <div class="text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                                <span class="ml-2 text-gray-600">4.0 (1.5k reviews)</span>
-                            </div>
-                            <p class="text-xl font-bold text-blue-600">$79.99</p>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </section>
 
-        <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <section class="py-16 bg-gradient-to-r text-white" style="background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.75)),url(../src/assets/imgs/bg1.jpg);background-size:cover;">
             <div class="container mx-auto px-4 text-center">
                 <h2 class="text-3xl font-bold mb-4">Start Learning Today</h2>
                 <p class="text-xl mb-8">Join millions of learners from around the world</p>
@@ -139,6 +124,14 @@
             </div>
         </section>
     </main>
+
+    <section id="my-courses" class="w-[90%] lg:w-[30%] bg-gray-100 h-full fixed right-[100%] shadow-md overflow-auto">
+        <button type="button" id="close-fav-md" class="mb-5"><i class="fa-solid fa-close text-xl hover:text-orange-400"></i></button>
+        <div class="grid grid-cols-1 gap-5">
+        
+        </div>
+    </section>
+
 
     <footer class="bg-gray-900 text-white">
         <div class="container mx-auto px-4 py-12">
@@ -181,6 +174,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="../src//assets/js/script.js"></script>
 </body>
 </html>

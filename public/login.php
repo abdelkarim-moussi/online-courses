@@ -2,15 +2,18 @@
 session_start();
 
 
-    if($_SESSION['urole'] === "admin"){
-        header("Location: adminDashboard.php");
+    if(isset($_SESSION["urole"])){
+        if($_SESSION['urole'] === "admin"){
+            header("Location: adminDashboard.php");
+        }
+        elseif($_SESSION['urole'] === "teacher"){
+            header("Location: teacherDashboard.php");
+        }
+        elseif($_SESSION['urole'] === "student"){
+            header("Location: index.php");
+        }
     }
-    elseif($_SESSION['urole'] === "teacher"){
-        header("Location: teacherDashboard.php");
-    }
-    else {
-        header("Location: index.php");
-    }
+   
 
 ?>
 <!DOCTYPE html>
@@ -36,7 +39,6 @@ session_start();
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
             </div>
             <div class="hidden md:flex space-x-4 text-sm">
-                <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</a>
                 <a href="signup.php" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
             </div>
             <button class="md:hidden text-gray-600">

@@ -4,6 +4,7 @@ session_start();
 include_once "../classes/Teacher.php";
 include_once "../classes/Admin.php";
 include_once "../classes/User.php";
+include_once "../dao/UserDao.php";
 include_once "../dao/CourseDao.php";
 include_once "../dao/tagDao.php";
 include_once "../dao/CategorieDao.php";
@@ -19,9 +20,13 @@ if(isset($_SESSION['userId'])){
 }
 else header("Location: login.php");
 
+$userdao = new UserDao();
 $courseDao = new CourseDao();
 $categorieDao = new CategorieDao();
 $tagDao = new TagDao();
+
+$user = new User();
+$user->setId($_SESSION["userId"])
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,14 +55,18 @@ $tagDao = new TagDao();
                     <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
                         <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold active-btn" data-id="courses"><i class="fa-solid fa-book"></i>Courses</a>
                     </li>
-                    <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
+                    <!-- <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
                         <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="enrollments"><i class="fa-solid fa-bookmark"></i>Enrollments</a>
-                    </li>
+                    </li> -->
                     <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
                         <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="add-course"><i class="fa-solid fa-add"></i>Add Course</a>
                     </li>
                     <li class="hover:bg-blue-50 toggeled-item rounded-md transition duration-200">
                         <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold" data-id="profile"><i class="fa-solid fa-user"></i>Profile</a>
+                    </li>
+
+                    <li class="absolute bottom-6 w-56 hover:bg-blue-50 rounded-md transition duration-200">
+                    <a href="../includes/logout.inc.php" class="flex items-center gap-3 px-4 py-2 text-sm font-semibold "><i class="fa-solid fa-sign-out"></i>Logout</a>
                     </li>
                    
                 </ul>
@@ -77,7 +86,7 @@ $tagDao = new TagDao();
                         <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-book text-blue-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"></h1>
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->getNumCourseByUserId($user->getId()); echo $row["numc"]?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">All Courses</h3>
                 </div>
@@ -86,7 +95,7 @@ $tagDao = new TagDao();
                         <div class="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-check text-green-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"></h1>
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->showNumCoursesByStatByTeacher("accepted"); echo $row["numc"]?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">Accepted Courses</h3>
                 </div>
@@ -95,7 +104,7 @@ $tagDao = new TagDao();
                         <div class="bg-orange-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-clock text-orange-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"></h1>
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->showNumCoursesByStatByTeacher("pending"); echo $row["numc"]?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">Pending Courses</h3>
                 </div>
@@ -104,9 +113,18 @@ $tagDao = new TagDao();
                         <div class="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center">
                             <i class="fa-solid fa-times text-red-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold"></h1>
+                        <h1 class="text-3xl font-bold"><?php $row = $courseDao->showNumCoursesByStatByTeacher("refused"); echo $row["numc"]?></h1>
                     </div>
                     <h3 class="text-gray-600 mt-2">Refused Courses</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-times text-red-600"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold"><?=$courseDao->getEnrollements($user->getId());?></h1>
+                    </div>
+                    <h3 class="text-gray-600 mt-2">Errollements</h3>
                 </div>
             </div>
 
@@ -126,8 +144,8 @@ $tagDao = new TagDao();
          <tbody>
             
          <?php 
-            $teacherId = $_SESSION["userId"];
-            foreach($courseDao->getCoursesByUserId($teacherId) as $row ){
+           
+            foreach($courseDao->getCoursesByUserId($user->getId()) as $row ){
             ?>
             <tr>
               <td class="font-normal">
@@ -137,7 +155,7 @@ $tagDao = new TagDao();
               <?php echo $row->getTitle();?>
               </td>
               <td class="font-normal">
-              <?php echo $row->getFullName();?>
+              <?php echo $row->getTeacher()->getFullName();?>
               </td>
               <td class="font-normal">
                   <p class="bg-blue-50 rounded-md"><?php echo $row->getStatus();?></p>
@@ -255,14 +273,14 @@ $tagDao = new TagDao();
 <section class="w-full section text-[#111C2D] bg-white rounded-lg shadow-md sec6" id="profile">
 
 <h1 class="text-lg mb-5 border-b pb-5 capitalize">My personal informations </h1>
-
+    <?php $userInfo = $userdao->UserInfo($user->getId()) ?>
    <div class="flex flex-col gap-2 border-t border-1 py-5 px-10 shadow-md rounded-md text-sm">
-        <img src="../profile-imgs/" alt="author image" class="w-[80px] h-[80px] p-2 rounded-full object-cover">
-        <p>firstname : <span class="font-semibold"></span></p>
-        <p>lastname : <span class="font-semibold"></span></p>
-        <p>email : <span class="font-semibold"></span></p>
-        <p>role : <span class="font-semibold"></span></p>
-        <button type="button" id="booking-btn" onclick="infoModal('<?php echo $userInfo['firstname']; ?>','<?php echo $userInfo['lastname']; ?>','<?php echo $userInfo['email']; ?>')" class="rounded-md bg-blue-500 hover:bg-blue-600 text-white w-[200px] uppercase px-3 py-1 my-4">edit info</button>
+        <img src="../profile-imgs/<?=$userInfo->getPhoto();?>" alt="author image" class="w-[80px] h-[80px] p-2 rounded-full object-cover">
+        <p>firstname : <span class="font-semibold"><?=$userInfo->getFirstName() ?></span></p>
+        <p>lastname : <span class="font-semibold"><?=$userInfo->getLastName() ?></span></p>
+        <p>email : <span class="font-semibold"><?=$userInfo->getEmail() ?></span></p>
+        <p>role : <span class="font-semibold"><?=$userInfo->getRole() ?></span></p>
+        
    </div>
  <?php ?>
 
@@ -304,10 +322,8 @@ $tagDao = new TagDao();
     </div>
 </section>
 
-<section id="enrollments" class="w-full section text-[#111C2D] bg-white rounded-lg shadow-md sec9">
-</section>
 
-  </main>
+</main>
 
 <script>
 

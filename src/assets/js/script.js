@@ -44,4 +44,16 @@ function sectionSwitch(){
 }
 sectionSwitch();
 
+    const closeModal = document.getElementById("close-fav-md");
+    const Mycourses = document.getElementById("my-courses");
+    const openMyCourses = document.getElementById("my-courses-btn");
+
+    openMyCourses.addEventListener("click",()=>{
+        Mycourses.style.right = '0';  
+    })
+    closeModal.addEventListener("click",()=>{
+        // favModal.classList.add("hidden");
+        Mycourses.style.right = '100%';
+    })
+
 

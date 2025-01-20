@@ -1,9 +1,23 @@
-<?php 
+<?php
+session_start();
 include_once "../dao/CourseDao.php";
+include_once "../classes/User.php";
+include_once "../dao/UserDao.php";
+
+
+$user = new User();
+$user->setId($_SESSION["userId"]);
+$user->setRole($_SESSION["urole"]);
+$userId = $user->getId();
+$userRole = $user->getRole();
+$userDao = new UserDao();
 
 $courseDao = new CourseDao();
+$co = new Course();
+$co->setCourseId($_GET['id']);
 
-$course = $courseDao->getCourseById($_GET['id']);
+$course = $courseDao->getCourseById($co->getCourseId());
+
 
 ?>
 <!DOCTYPE html>
@@ -18,17 +32,23 @@ $course = $courseDao->getCourseById($_GET['id']);
 <body class="bg-gray-50">
     <header class="fixed w-full bg-white shadow-sm z-50">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-blue-600">EduHub</div>
-            <div class="hidden md:flex space-x-8">
+            <div class="text-xl font-bold text-blue-600">EduHub</div>
+            <div class="hidden md:flex space-x-8 text-sm">
                 <a href="index.php" class="text-gray-600 hover:text-blue-600">Home</a>
                 <a href="courses_view.php" class="text-gray-600 hover:text-blue-600">Courses</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Categories</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
             </div>
-            <div class="hidden md:flex space-x-4">
-                <button class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</button>
+            <div class="hidden md:flex space-x-4 text-sm">
+                <?php if(isset($userId) && $userRole === "student"){ ?>
+                    <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a>
+                    <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">logout</i></a>
+                    <a href="my-courses.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">my courses</i></a>
+                <?php } else{ ?>
+                    <a href="login.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</a>
+                    <a href="signup.php" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
+                <?php } ?>
             </div>
             <button class="md:hidden text-gray-600">
                 <i class="fas fa-bars text-2xl"></i>
@@ -58,20 +78,27 @@ $course = $courseDao->getCourseById($_GET['id']);
                             <i class="fas fa-user-graduate mr-2"></i>
                             <span id="courseInstructor">By <?=$course->getTeacher()->getFullName();?></span>
                             <i class="fas fa-users ml-6 mr-2"></i>
-                            <span>12,345 students enrolled</span>
+                            <span> students enrolled</span>
                         </div>
                     </div>
                     <div class="md:w-1/2">
-                        <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-center">
+
                             <div class="aspect-w-16 aspect-h-9 mb-4">
                                 <img class="max-h-[200px] w-full object-cover" src="../uploads/<?=$course->getThumbnail()?>" alt="Course Preview" class="rounded-lg w-full">
                             </div>
-                            
-                            <button class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg mb-4 hover:bg-blue-700 transition-colors">
-                                Enroll Now
-                            </button>
-                            <button class="w-full border border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-colors">
-                                Add to Wishlist
+                
+                            <button>
+                                <?php if($userDao->isEnroled($user,$course) === "Enrolled"){ ?>
+                                    <a href="../includes/course.inc.php?action=enroll?<?=$course->getCourseId()?>" class="w-full bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+                                       Already Enrolled
+                                    </a>
+
+                                <?php }elseif($user === "student") { ?>
+                                    <a href="../includes/course.inc.php?action=enroll?<?=$course->getCourseId()?>" class="w-full bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+                                        Enroll Now
+                                    </a>
+                                <?php } ?>
                             </button>
                         </div>
                     </div>

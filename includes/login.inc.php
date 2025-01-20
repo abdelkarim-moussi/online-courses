@@ -9,8 +9,8 @@ if(isset($_POST['login'])){
 
     if(isset($email) && isset($password)){
         
-        if($email === null || $password === null){
-            header("Location: ../public/login.php?email-or-password-can-not-be-null");
+        if(empty($email) || empty($password)){
+            header("Location: ../public/login.php?email-or-password-can-not-be-empty");
             exit();
         }
         
@@ -20,13 +20,6 @@ if(isset($_POST['login'])){
         $userDao = new UserDao();
         $userDao->login($user);
 
-        echo $_SESSION["urole"];
-
-        if($_SESSION['urole'] ==="teacher"){
-            header("Location: ../public/teacherDashboard.php");
-        }
-        else if($_SESSION['urole'] ==="admin"){
-            header("Location: ../public/adminDashboard.php");
-        }
+        header("Location: ../public/index.php");
     }
 }

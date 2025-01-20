@@ -1,6 +1,5 @@
 <?php
-
-use function PHPSTORM_META\type;
+session_start();
 
 include_once "../classes/Course.php";
 include_once "../classes/Tag.php";
@@ -9,12 +8,14 @@ include_once "../classes/Course_Tag.php";
 include_once "../dao/CourseDao.php";
 include_once "../dao/categorieDao.php";
 include_once "../dao/tagDao.php";
+include_once "../dao/UserDao.php";
 
+$userDao = new UserDao();
 $courseDao = new CourseDao();
 $catDao = new CategorieDao();
 $tagDao = new TagDao();
 
-$teacherId = 3;
+$userId = $_SESSION["userId"];
 
 if(isset($_POST["add-course"])){
 
@@ -38,7 +39,7 @@ if(isset($_POST["add-course"])){
         $categorie->setCategorieId($catdb->getCategorieId());
         
         $teacher = new Teacher();
-        $teacher->setId($teacherId);
+        $teacher->setId($userId);
 
         $thumbnailName = $_FILES["thumbnail"]["name"];
         $thumbnailTmpName = $_FILES["thumbnail"]["tmp_name"];
@@ -114,7 +115,6 @@ if(isset($_POST["add-course"])){
 
                 $courseTag->setTag($tag);
                 $courseTag->setCourse($course);
-
                 $courseDao->createCourseTags($courseTag);
 
             }
@@ -144,6 +144,19 @@ if(isset($_GET['action'])){
         break;
         case 'delete' : $courseDao->deleteCourse($courseId);
         header("Location: ../public/adminDashboard.php");
+        case 'enroll' :
+        $course = new Course();
+        $course->setCourseId($courseId);
+
+        $user = new User();
+        $user->setId($userId);
+
+        if($userDao->enrollCourse($course,$user)){
+            header("Location: ../public/course-details.php?id=$courseId");
+        }
+ 
+        else  header("Location: ../public/course-details.php?id=$courseId&error");
+    
         break;
     }
 }
