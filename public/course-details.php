@@ -88,7 +88,7 @@ $course = $courseDao->getCourseById($co->getCourseId());
                             <i class="fas fa-user-graduate mr-2"></i>
                             <span id="courseInstructor">By <?=$course->getTeacher()->getFullName();?></span>
                             <i class="fas fa-users ml-6 mr-2"></i>
-                            <span> students enrolled</span>
+                            <span><?=$courseDao->getEnrollements($userId)?> students enrolled</span>
                         </div>
                     </div>
                     <div class="md:w-1/2">

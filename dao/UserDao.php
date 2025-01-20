@@ -292,16 +292,15 @@ class UserDao{
 
     public function isEnroled(User $user ,Course $course){
 
-        $query = "SELECT * FROM users_courses WHERE user_id = ? AND course_id = ?";
+        $stmt = $this->connection->prepare("SELECT * FROM users_courses WHERE user_id = ? AND course_id = ?");
                  
-        $stmt = $this->connection->prepare($query);
         $stmt->execute([$user->getId(),$course->getCourseId()]);
 
         if($stmt->rowCount() == 0){
-            return "not-Enrolled";
+            return false;
         }
 
-        else return "Enrolled";
+        else return true;
     }
 
 

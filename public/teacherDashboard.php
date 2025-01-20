@@ -161,7 +161,7 @@ $user->setId($_SESSION["userId"])
                   <p class="bg-blue-50 rounded-md"><?php echo $row->getStatus();?></p>
               </td>
               <td class="font-normal flex justify-center gap-3">
-                <a href="javascript:void(0);" onclick="openUpCourseModal('<?php echo $row->getCourseId(); ?>','<?php echo $row->getTitle(); ?>','<?php echo $row->getContent(); ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
+                <a href="javascript:void(0);" onclick="openUpCourseModal('<?php echo $row->getCourseId(); ?>','<?php echo $row->getTitle(); ?>','<?php echo $row->getDescription();$row->getCategorie()->getCatName() ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
                 <a href="../includes/course.inc.php?action=delete?<?=$row->getCourseId(); ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</a>
               </td>
             </tr>
@@ -180,18 +180,61 @@ $user->setId($_SESSION["userId"])
     
             <form class="space-y-4 md:space-y-6 text-sm" action="../includes/article.inc.php" method="post" id="">
 
-                 <div>
-                      <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">title</label>
-                      <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                 </div>
-                 <div>
-                    <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">course-content</label>
-                    <textarea name="content" id="content" class="h-[150px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                 </div>
-                 <div>
-                    <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">image</label>
-                    <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                 </div>
+            <div>
+                    <label for="course-title" class="block text-sm font-medium text-gray-700">Title</label>
+                    <input type="text" name="course-title" id="course-title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50" placeholder="course title">
+                </div>
+                <div>
+                    <label for="course-des" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="course-des" id="course-des" rows="2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50"></textarea>
+                </div>
+                <div>
+                <label for="course-cont" class="block text-sm font-medium text-gray-700">course-content type(video or document)</label>
+                    <select name="course-cont" id="course-cont" onchange="updateContent()" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                        <option value="" selected disabled>choose type</option>
+                        <option value="video">video</option>
+                        <option value="document">document</option>
+                    </select>
+                </div>
+                <div class="hidden" id="vid-container">
+                    <label for="video" class="block text-sm font-medium text-gray-700">upload video</label>
+                    <input type="file" name="video" id="video" accept="video/*" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                </div>
+                <div class="hidden" id="doc-container">
+                    <label for="doc" class="block text-sm font-medium text-gray-700">upload document</label>
+                    <input type="file" name="doc" id="doc" accept=".pdf,.docx,.ppt" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                </div>
+                <div>
+                    <label for="course-thumbnail" class="block text-sm font-medium text-gray-700">course thumbnail</label>
+                    <input type="file" name="course-thumbnail" id="course-thumbnail" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                </div>
+            
+                <div>
+                      <label for="course-cat" class="block text-sm font-medium text-gray-700">Categorie</label>
+                      <select name="course-cat" id="course-cat" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                      <?php foreach($categorieDao->showCategories() as $cat){ ?>
+                      <option value="<?php echo $cat->getCatName(); ?>"><?php echo $cat->getCatName(); ?></option>
+                      <?php } ?>
+                      </select>
+                </div>
+                <div>
+                    <label for="course-tags" class="block my-4 text-sm font-medium text-gray-900">
+                        Tags
+                    </label>
+                    <div class="mt-1 flex gap-5 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-50">
+                        <?php
+                        $tags = $tagDao->getTags();
+                         foreach($tags as $tag) {?>
+                        <div class="flex items-center mb-2">
+                            <input type="checkbox" name="course-tags[]" value="<?php echo $tag->getTagName(); ?>" 
+                                class="w-4 h-4 text-primary-500 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2">
+                            <label for="tags" class="ml-2 text-sm font-medium text-gray-900">
+                                <?php echo $tag->getTagName(); ?>
+                            </label>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
 
                     <input type="hidden" name="courseId" id="courseId">
 
@@ -329,18 +372,20 @@ $user->setId($_SESSION["userId"])
 
 const courseModal = document.getElementById("updateCourseModal");
 const profileModal = document.getElementById("profileModal");
-var artId;
+var courseId;
 var title;
-var content;
+var desc;
 var image;
+var categorie;
 
-function openUpCourseModal(artId,title,content){
+function openUpCourseModal(courseId,title,desc,categorie){
 
-    courseModal.classList.remove("hidden");
+   courseModal.classList.remove("hidden");
 
-   document.getElementById("title").value = title;
-   document.getElementById("content").textContent = content;
-   document.getElementById("artId").value = artId;
+   document.getElementById("course-title").value = title;
+   document.getElementById("course-des").textContent = desc;
+   document.getElementById("courseId").value = courseId;
+   document.getElementById("course-cat").value = categorie;
 
 }
 

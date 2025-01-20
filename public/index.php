@@ -52,7 +52,7 @@ $courseDao = new CourseDao();
                 <?php if(isset($userId) && $userRole === "student"){ ?>
                     <!-- <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a> -->
                     <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">logout</i></a>
-                    <a href="MyCourses.php?id=<?=$user_id?>" class="px-4 py-2 text-blue-600 hover:text-blue-700" id="my-courses">
+                    <a href="my-courses.php?id=<?=$user_id?>" class="px-4 py-2 text-blue-600 hover:text-blue-700" id="my-courses">
                         my courses
                     </a>
                 <?php } else{ ?>
