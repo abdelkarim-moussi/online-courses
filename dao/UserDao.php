@@ -298,10 +298,10 @@ class UserDao{
         $stmt->execute([$user->getId(),$course->getCourseId()]);
 
         if($stmt->rowCount() == 0){
-            return ["not Enrolled"];
+            return "not-Enrolled";
         }
 
-        else return ["Enrolled"];
+        else return "Enrolled";
     }
 
 

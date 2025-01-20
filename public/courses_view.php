@@ -5,11 +5,22 @@ include_once "../dao/CategorieDao.php";
 include_once "../classes/User.php";
 include_once "../dao/UserDao.php";
 
-$user = new User();
-$user->setId($_SESSION["userId"]);
-$user->setRole($_SESSION["urole"]);
-$userId = $user->getId();
-$userRole = $user->getRole();
+if(isset($_SESSION["urole"])){
+
+    if($_SESSION["urole"] === "admin"){
+        header("Location: adminDashboard.php");
+    }
+    elseif($_SESSION["urole"] === "teacher"){
+        header("Location: teacherDashboard.php");
+    }
+    
+    $user = new User();
+    $user->setId($_SESSION["userId"]);
+    $user->setRole($_SESSION["urole"]);
+    $userId = $user->getId();
+    $userRole = $user->getRole();
+}
+
 
 $courseDao = new CourseDao();
 $catDao = new CategorieDao();

@@ -11,6 +11,13 @@ if (!isset($_SESSION["userId"])) {
     exit();
 }
 
+if($_SESSION["urole"] === "admin"){
+    header("Location: adminDashboard.php");
+}
+elseif($_SESSION["urole"] === "teacher"){
+    header("Location: teacherDashboard.php");
+}
+
 $courseDao = new CourseDao();
 $userDao = new UserDao();
 

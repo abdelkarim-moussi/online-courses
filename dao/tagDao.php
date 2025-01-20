@@ -33,9 +33,9 @@ class TagDao{
                 return "tag-already-exist";
             }
             else{
-                $slectTag = $this->connection->prepare("INSERT INTO tags (tag_name) VALUES(:tagname)");
-                $slectTag->bindParam(":tagname",$tag->gettagName());
-                $slectTag->execute();
+                $inserTag = $this->connection->prepare("INSERT INTO tags (tag_name) VALUES(:tagname)");
+                $inserTag->bindParam(":tagname",$tag->getTagName());
+                $inserTag->execute();
             }
 
         }catch(PDOException $e){

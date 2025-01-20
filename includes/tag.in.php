@@ -10,7 +10,8 @@ if(isset($_POST['add-tag'])){
     $tagName = htmlspecialchars($_POST['tag-name']);
 
     if(!empty($tagName)){
-        $tag = new Tag($tagName);
+        $tag = new Tag();
+        $tag->setTagName($tagName);
         $tagDao->createTag($tag);
         $msg = $tagDao->createTag($tag);
         header("Location: ../public/adminDashboard.php");

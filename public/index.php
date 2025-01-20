@@ -4,13 +4,25 @@ include_once "../dao/CourseDao.php";
 
 if(isset($_SESSION["userId"])){
     $user_id = $_SESSION["userId"];
+
+    if($user_id === "admin"){
+        header("Location: adminDashboard.php");
+    }
+    elseif($user_id === "teacher"){
+        header("Location: teacherDashboard.php");
+    }
+
+    $user = new User();
+    $user->setId($_SESSION["userId"]);
+    $user->setRole($_SESSION["urole"]);
+    $userId = $user->getId();
+$userRole = $user->getRole();
 }
 
-$user = new User();
-$user->setId($_SESSION["userId"]);
-$user->setRole($_SESSION["urole"]);
-$userId = $user->getId();
-$userRole = $user->getRole();
+
+
+
+
 $courseDao = new CourseDao();
 
 
@@ -20,14 +32,14 @@ $courseDao = new CourseDao();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduHub - Online Learning Platform</title>
+    <title>EduOnline - Online Learning Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
     <header class="fixed w-full bg-white shadow-sm z-50">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-xl font-bold text-blue-600">EduHub</div>
+            <div class="text-xl font-bold text-blue-600">EduOnline</div>
             <div class="hidden md:flex space-x-8 text-sm">
                 <a href="#" class="text-blue-600">Home</a>
                 <a href="courses_view.php" class="text-gray-600 hover:text-blue-600">Courses</a>

@@ -20,6 +20,12 @@ if(isset($_POST['login'])){
         $userDao = new UserDao();
         $userDao->login($user);
 
-        header("Location: ../public/index.php");
+        if($_SESSION['urole'] ==="teacher"){
+            header("Location: ../public/teacherDashboard.php");
+        }
+        else if($_SESSION['urole'] ==="admin"){
+            header("Location: ../public/adminDashboard.php");
+        }
+        else header("Location: ../public/index.php");
     }
 }

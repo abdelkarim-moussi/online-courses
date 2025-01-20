@@ -290,10 +290,8 @@ class CourseDao implements ICourseDao{
     }
 
     public function deleteCourse($courseId){
-        $db = DataBase::getInstance();
-        $conn = $db->getConnection();
 
-        $deleteCourse = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
+        $deleteCourse = $this->connection->prepare("DELETE FROM courses WHERE course_id = ?");
         $deleteCourse->execute([$courseId]);
     }
 

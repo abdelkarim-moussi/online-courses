@@ -36,7 +36,7 @@ $user->setId($_SESSION["userId"])
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../src/assets/css/style.css?v=<?php echo time(); ?>">
-    <title>Online Courses</title>
+    <title>EduOnline - teacher</title>
 </head>
 
 <body class="flex bg-[#F0F5F9] p-4 relative gap-5">
@@ -46,7 +46,7 @@ $user->setId($_SESSION["userId"])
 
 <section id="nav-bar" class="px-3 text-[#111C2D] w-[300px] bg-white notActive rounded-xl shadow-lg shadow-gray-400">
             <div class="flex items-center justify-center py-2 border-b-[1px] border-gray-300">
-                <h4 class="text-blue-500 font-extrabold text-[1.1rem] mt-5">Online<span class="text-[#111C2D]">/Courses</span>
+                <h4 class="text-blue-500 font-extrabold text-[1.1rem] mt-5">Edu<span class="text-[#111C2D]">/Online</span>
                 </h4>
             </div>
             
@@ -162,7 +162,7 @@ $user->setId($_SESSION["userId"])
               </td>
               <td class="font-normal flex justify-center gap-3">
                 <a href="javascript:void(0);" onclick="openUpCourseModal('<?php echo $row->getCourseId(); ?>','<?php echo $row->getTitle(); ?>','<?php echo $row->getContent(); ?>')" class="bg-yellow-100 hover:bg-yellow-200 rounded-md py-1 px-3">update</a>
-                <a href="../includes/course.inc.php?action=delete?<?php echo $course['course_id']; ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</i></a>
+                <a href="../includes/course.inc.php?action=delete?<?=$row->getCourseId(); ?>" class="bg-red-100 hover:bg-red-200 rounded-md py-1 px-3">delete</a>
               </td>
             </tr>
             <?php } ?>

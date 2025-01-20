@@ -80,6 +80,7 @@ if(isset($_POST["add-course"])){
                 $courseTag->setCourse($course);
 
                 $courseDao->createCourseTags($courseTag);
+                header("Location: ../public/teacherDashboard.php");
 
             }
         }
@@ -116,7 +117,7 @@ if(isset($_POST["add-course"])){
                 $courseTag->setTag($tag);
                 $courseTag->setCourse($course);
                 $courseDao->createCourseTags($courseTag);
-
+                header("Location: ../public/teacherDashboard.php");
             }
         }
 

@@ -13,9 +13,6 @@ if(!isset($_SESSION["urole"])){
 if($_SESSION["urole"] === "teacher"){
     header("Location:teacherDashboard.php");
 }
-elseif($_SESSION["urole"] === "admin"){
-    header("Location:adminDashboard.php.php");
-}
 
 else if($_SESSION["urole"] === "student"){
 header("Location: index.php");
@@ -37,7 +34,7 @@ $tagDao = new TagDao();
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../src/assets/css/style.css?v=<?php echo time(); ?>">
-    <title>Online Courses</title>
+    <title>EduOnline - Admin</title>
 </head>
 
 <body class="flex bg-gray-100 p-6 gap-6 overflow-auto">
@@ -45,7 +42,7 @@ $tagDao = new TagDao();
     <!-- Sidebar -->
     <section id="nav-bar" class="bg-white w-64 rounded-xl shadow-lg fixed h-screen">
         <div class="flex items-center justify-center py-6 border-b border-gray-200">
-            <h4 class="text-2xl font-bold text-blue-600">Online<span class="text-gray-800">Courses</span></h4>
+            <h4 class="text-2xl font-bold text-blue-600">Edu<span class="text-gray-800">Online</span></h4>
         </div>
         <div class="py-6">
             <ul class="space-y-3">
@@ -282,7 +279,7 @@ $tagDao = new TagDao();
         <section class="w-full section text-[#111C2D] bg-white sec8 relative" id="tags">
             <div class="border-b pb-5 mb-5 flex justify-between items-center">
                 <h1 class="text-lg capitalize">Disponible Tags</h1>
-                <button id="addnewcat" onclick="openTagModal()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add New Tag</button>
+                <button id="addnewcat" onclick="openTagModal()" class="bg-blue-600 text-sm text-white px-4 py-2 rounded-md hover:bg-blue-700">Add New Tag</button>
             </div>
             <table class="w-full rounded-lg text-sm">
                 <thead>
