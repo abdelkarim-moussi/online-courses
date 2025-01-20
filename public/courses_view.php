@@ -2,25 +2,6 @@
 session_start();
 include_once "../dao/CourseDao.php";
 include_once "../dao/CategorieDao.php";
-include_once "../classes/User.php";
-include_once "../dao/UserDao.php";
-
-if(isset($_SESSION["urole"])){
-
-    if($_SESSION["urole"] === "admin"){
-        header("Location: adminDashboard.php");
-    }
-    elseif($_SESSION["urole"] === "teacher"){
-        header("Location: teacherDashboard.php");
-    }
-    
-    $user = new User();
-    $user->setId($_SESSION["userId"]);
-    $user->setRole($_SESSION["urole"]);
-    $userId = $user->getId();
-    $userRole = $user->getRole();
-}
-
 
 $courseDao = new CourseDao();
 $catDao = new CategorieDao();
@@ -33,6 +14,23 @@ $catDao = new CategorieDao();
     <title>Courses - EduOnline</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="../src/assets/js/courses.js" defer></script>
+    <script>
+        // Prepare course data for JavaScript
+        const courses = <?php 
+            $coursesData = array_map(function($course) {
+                return [
+                    'id' => $course->getCourseId(),
+                    'title' => $course->getTitle(),
+                    'instructor' => $course->getTeacher() ? $course->getTeacher()->getFullName() : 'Unknown',
+                    'description' => $course->getDescription(),
+                    'thumbnail' => $course->getThumbnail(),
+                    'category' => $course->getCategorie() ? $course->getCategorie()->getCatName() : 'Uncategorized'
+                ];
+            }, $courseDao->showCourses());
+            echo json_encode($coursesData);
+        ?>;
+    </script>
 </head>
 <body class="bg-gray-50">
     <header class="fixed w-full bg-white shadow-sm z-50">
@@ -46,8 +44,8 @@ $catDao = new CategorieDao();
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
             </div>
             <div class="hidden md:flex space-x-4 text-sm">
-                <?php if(isset($userId) && $userRole === "student"){ ?>
-                    <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a>
+                <?php if(session_id()){ ?>
+                    <!-- <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a> -->
                     <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">logout</i></a>
                     <a href="my-courses.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">my courses</i></a>
                 <?php } else{ ?>
@@ -55,7 +53,6 @@ $catDao = new CategorieDao();
                     <a href="signup.php" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
                 <?php } ?>
             </div>
-
             <button class="md:hidden text-gray-600">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
@@ -63,7 +60,7 @@ $catDao = new CategorieDao();
     </header>
 
     <main class="pt-20">
-        <section class="bg-gradient-to-r py-12" style="background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.75)),url(../src/assets/imgs/bg1.jpg);background-size:cover;">
+        <section class="bg-gradient-to-r from-blue-600 to-blue-800 py-12">
             <div class="container mx-auto px-4 text-center text-white">
                 <h1 class="text-4xl font-bold mb-4">Browse Our Courses</h1>
                 <p class="text-xl">Discover the perfect course to advance your skills</p>
@@ -91,37 +88,71 @@ $catDao = new CategorieDao();
 
                 <!-- Main Content -->
                 <div class="flex-1">
-                    <?php $pages = $courseDao->getPages(); ?>
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                         <div class="w-full md:w-96">
-                            <div class="relative">
-                                <input type="text" placeholder="Search courses..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                            </div>
+                            <form method="GET" action="" class="relative">
+                                <input type="text" 
+                                       name="search" 
+                                       placeholder="Search courses..." 
+                                       value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                                       class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                <button type="submit" class="absolute left-3 top-3 text-gray-400">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
                         </div>
-
+                    
                     </div>
+
+                    <?php
+                    // Get search query
+                    $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+                    
+                    // Get all courses
+                    $allCourses = $courseDao->showCourses();
+                    
+                    // Filter courses if search query exists
+                    if (!empty($searchQuery)) {
+                        $allCourses = array_filter($allCourses, function($course) use ($searchQuery) {
+                            return (
+                                stripos($course->getTitle(), $searchQuery) !== false || 
+                                stripos($course->getDescription(), $searchQuery) !== false ||
+                                stripos($course->getTeacher()->getFullName(), $searchQuery) !== false ||
+                                stripos($course->getCategorie()->getCatName(), $searchQuery) !== false
+                            );
+                        });
+                    }
+                    ?>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Course Cards -->
-                         <?php foreach($courseDao->showCoursesByStatus("accepted",0) as $course){ ?>
-                        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                            <img src="../uploads/<?=$course->getThumbnail()?>" alt="Course" class="w-full h-48 object-cover">
-                            <div class="p-6">
-                                <a href="../public/course-details.php?id=<?=$course->getCourseId();?>"><h3 class="text-xl font-semibold mb-2"><?php echo $course->getTitle(); ?></h3></a>
-                                <p class="text-gray-600 mb-2">By <?=$course->getTeacher()->getFullName(); ?></p>
-                                
-                                <p class="text-lg font-bold text-blue-600"><?=$course->getCategorie()->getCatName(); ?></p>
+                        <?php if (empty($allCourses)): ?>
+                            <div class="col-span-3 text-center py-8">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-2">No courses found</h3>
+                                <?php if (!empty($searchQuery)): ?>
+                                    <p class="text-gray-600 mb-4">No courses match your search criteria.</p>
+                                    <a href="courses_view.php" class="text-blue-600 hover:underline">Clear search</a>
+                                <?php endif; ?>
                             </div>
-                        </div>
-                        <?php } ?>
-
-                        <!-- Repeat similar course cards -->
+                        <?php else: ?>
+                            <!-- Course Cards -->
+                            <?php foreach($allCourses as $course): ?>
+                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                                <img src="../uploads/<?=$course->getThumbnail()?>" alt="Course" class="w-full h-48 object-cover">
+                                <div class="p-6">
+                                    <a href="../public/course-details.php?id=<?=$course->getCourseId();?>">
+                                        <h3 class="text-xl font-semibold mb-2"><?php echo htmlspecialchars($course->getTitle()); ?></h3>
+                                    </a>
+                                    <p class="text-gray-600 mb-2">By <?=htmlspecialchars($course->getTeacher()->getFullName()); ?></p>
+                                    <p class="text-lg font-bold text-blue-600"><?=htmlspecialchars($course->getCategorie()->getCatName()); ?></p>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="flex justify-center items-center space-x-2 mt-8">
-                    <?php 
+                     <!-- Pagination -->
+                     <div class="flex justify-center items-center space-x-2 mt-8">
+                    <?php   $pages = $courseDao->getPages();
                             for($c = 1 ; $c <= $pages; $c++){
                             ?>
                             <a href="?page-nb=<?php echo $c; ?>" class="border hover:bg-blue-500 hover:text-white px-3 text-lg"><?php echo $c; ?></a>
@@ -173,6 +204,5 @@ $catDao = new CategorieDao();
         </div>
     </footer>
 
-    <script src="../src/assets/js"></script>
 </body>
 </html>

@@ -23,6 +23,9 @@ $userDao = new UserDao();
 
 $user = new User();
 $user->setId($_SESSION["userId"]);
+$user->setRole($_SESSION["urole"]);
+$userId = $user->getId();
+$userRole = $user->getRole();
 
 // Get enrolled courses for the user
 $enrolledCourses = $userDao->getEnrolledCourses($user);
@@ -50,9 +53,16 @@ $enrolledCourses = $userDao->getEnrolledCourses($user);
                 <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
             </div>
             <div class="hidden md:flex space-x-4 text-sm">
-                <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a>
-                <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">Logout</a>
+                <?php if(isset($userId) && $userRole === "student"){ ?>
+                    <!-- <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a> -->
+                    <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">logout</a>
+                    
+                <?php } else{ ?>
+                    <a href="login.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">Login</a>
+                    <a href="signup.php" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign Up</a>
+                <?php } ?>
             </div>
+           
         </nav>
     </header>
 
