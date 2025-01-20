@@ -99,16 +99,9 @@ $course = $courseDao->getCourseById($co->getCourseId());
                             </div>
                 
                             <button>
-                                <?php if($userDao->isEnroled($user,$course) === "Enrolled"){ ?>
-                                    <a href="#" class="w-full bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
-                                       Already Enrolled
-                                    </a>
-
-                                <?php }elseif($user === "student" && $userDao->isEnroled($user,$course) === "not-Enrolled") { ?>
-                                    <a href="../includes/course.inc.php?action=enroll?<?=$course->getCourseId()?>" class="w-full bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
-                                        Enroll Now
-                                    </a>
-                                <?php } ?>
+                                <a href="../includes/course.inc.php?action=enroll?<?=$course->getCourseId()?>" class="w-full bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+                                    Enroll Now
+                                </a>
                             </button>
                         </div>
                     </div>
@@ -126,6 +119,11 @@ $course = $courseDao->getCourseById($co->getCourseId());
                         <!-- Course Content -->
                         <div class="bg-white rounded-lg shadow-lg p-6 mb-8 w-full">
                             <h2 class="text-2xl font-bold mb-4">Course Content</h2>
+                            <div class="flex gap-2 py-3">
+                                <?php foreach($courseDao->getCourseTags($co) as $tag){ ?>
+                                    <p class="bg-blue-50 px-2 rounded-full"><?=$tag->getTagName(); ?></p>
+                                <?php } ?>
+                            </div>
                             <iframe src="../uploads/<?=$course->getContent()?>" frameborder="0" class="w-full h-[350px]"></iframe>
                         </div>
 
@@ -223,6 +221,6 @@ $course = $courseDao->getCourseById($co->getCourseId());
         </div>
     </footer>
 
-    <script src="course-details.js"></script>
+    
 </body>
 </html>

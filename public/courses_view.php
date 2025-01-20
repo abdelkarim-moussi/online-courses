@@ -14,23 +14,8 @@ $catDao = new CategorieDao();
     <title>Courses - EduOnline</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="../src/assets/js/courses.js" defer></script>
-    <script>
-        // Prepare course data for JavaScript
-        const courses = <?php 
-            $coursesData = array_map(function($course) {
-                return [
-                    'id' => $course->getCourseId(),
-                    'title' => $course->getTitle(),
-                    'instructor' => $course->getTeacher() ? $course->getTeacher()->getFullName() : 'Unknown',
-                    'description' => $course->getDescription(),
-                    'thumbnail' => $course->getThumbnail(),
-                    'category' => $course->getCategorie() ? $course->getCategorie()->getCatName() : 'Uncategorized'
-                ];
-            }, $courseDao->showCourses());
-            echo json_encode($coursesData);
-        ?>;
-    </script>
+   
+    
 </head>
 <body class="bg-gray-50">
     <header class="fixed w-full bg-white shadow-sm z-50">
@@ -60,7 +45,7 @@ $catDao = new CategorieDao();
     </header>
 
     <main class="pt-20">
-        <section class="bg-gradient-to-r from-blue-600 to-blue-800 py-12">
+        <section class="bg-gradient-to-r py-12" style="background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.75)),url(../src/assets/imgs/bg1.jpg);background-size:cover;">
             <div class="container mx-auto px-4 text-center text-white">
                 <h1 class="text-4xl font-bold mb-4">Browse Our Courses</h1>
                 <p class="text-xl">Discover the perfect course to advance your skills</p>
@@ -69,22 +54,7 @@ $catDao = new CategorieDao();
 
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
-                <!-- Filters Sidebar -->
-                <aside class="lg:w-64 space-y-6">
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h3 class="font-semibold text-lg mb-4">Categories</h3>
-                        <div class="space-y-2">
-                            <?php foreach($catDao->showCategories() as $categorie){ ?>
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" class="rounded text-blue-600">
-                                <span class="text-gray-700"><?=$categorie->getCatName() ?></span>
-                            </label>
-                            <?php } ?> 
-                            
-                        </div>
-                    </div>
-
-                </aside>
+                
 
                 <!-- Main Content -->
                 <div class="flex-1">

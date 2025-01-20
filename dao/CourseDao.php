@@ -1,5 +1,6 @@
 <?php
 include_once "../classes/Course.php";
+include_once "../classes/Tag.php";
 include_once "../classes/Course_Tag.php";
 include_once "ICourseDao.php";
 
@@ -323,6 +324,24 @@ class CourseDao implements ICourseDao{
         $numrows = $slect->fetch();
         return $numrows;
 
+    }
+
+    public function getCourseTags(Course $course){
+        $courseId = $course->getCourseId();
+
+        $slect =$this->connection->prepare("SELECT * FROM tags INNER JOIN courses_tags ON tags.tag_id = courses_tags.tag_id 
+        WHERE courses_tags.course_id = ?");
+        $slect->execute([$courseId]);
+        $tags = [];
+
+       while( $row = $slect->fetch()){
+          $tag = new Tag();
+          $tag->setTagName($row["tag_name"]);
+
+          array_push($tags,$tag);
+       }
+
+       return $tags;
     }
 
 }

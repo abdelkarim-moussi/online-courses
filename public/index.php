@@ -50,7 +50,7 @@ $courseDao = new CourseDao();
             </div>
             <div class="hidden md:flex space-x-4 text-sm">
                 <?php if(isset($userId) && $userRole === "student"){ ?>
-                    <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a>
+                    <!-- <a href="#" class="px-4 py-2 text-blue-600 hover:text-blue-700"><i class="fa-solid fa-user"></i></a> -->
                     <a href="../includes/logout.inc.php" class="px-4 py-2 text-blue-600 hover:text-blue-700">logout</i></a>
                     <a href="MyCourses.php?id=<?=$user_id?>" class="px-4 py-2 text-blue-600 hover:text-blue-700" id="my-courses">
                         my courses
@@ -186,6 +186,6 @@ $courseDao = new CourseDao();
         </div>
     </footer>
 
-    <script src="../src//assets/js/script.js"></script>
+    <script src="../src/assets/js/script.js"></script>
 </body>
 </html>
